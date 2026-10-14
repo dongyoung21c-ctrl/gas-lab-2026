@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>구글 앱스 스크립트 실습실</title>
+<meta name="description" content="2026 AI·디지털지식나눔교사 1~2차시 구글 앱스 스크립트 실습 웹앱 · 비산초등학교 신동영">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='10' cy='10' r='6' fill='%234285F4'/%3E%3Ccircle cx='22' cy='10' r='6' fill='%23EA4335'/%3E%3Ccircle cx='10' cy='22' r='6' fill='%23FBBC04'/%3E%3Ccircle cx='22' cy='22' r='6' fill='%2334A853'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --blue: #1a73e8; --blue-soft: #e8f0fe; --blue-ink: #174ea6;
+    --green: #188038; --green-soft: #e6f4ea;
+    --yellow: #b06000; --yellow-soft: #fef7e0;
+    --red: #c5221f; --red-soft: #fce8e6;
+    --ink: #1f2430; --ink-2: #3c4350; --muted: #667085; --line: #e4e7ec;
+    --bg: #f5f7fa; --card: #ffffff; --code-bg: #0d1117;
+    --radius: 14px; --shadow: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.06);
+    --font: 'Pretendard Variable', Pretendard, -apple-system, 'Malgun Gothic', sans-serif;
+    --mono: 'D2Coding', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: var(--mono); font-size: .88em; background: #eef1f5; color: #b3261e; padding: .1em .38em; border-radius: 5px; }
+  h1, h2, h3, h4 { line-height: 1.3; margin: 0; letter-spacing: -.01em; }
+  button { font-family: inherit; }
+
+  /* ── header ── */
+  .topbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 20px; padding: 0 20px; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .dots { display: grid; grid-template-columns: 9px 9px; gap: 3px; }
+  .dots i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+  .dots i:nth-child(1) { background: #4285f4; } .dots i:nth-child(2) { background: #ea4335; }
+  .dots i:nth-child(3) { background: #fbbc04; } .dots i:nth-child(4) { background: #34a853; }
+  .brand b { font-size: 16px; display: block; line-height: 1.2; }
+  .brand small { font-size: 11.5px; color: var(--muted); display: block; line-height: 1.2; }
+  nav.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs a { white-space: nowrap; padding: 8px 13px; border-radius: 999px; color: var(--ink-2); font-size: 14.5px; font-weight: 600; }
+  nav.tabs a:hover { background: #f0f2f5; text-decoration: none; }
+  nav.tabs a.active { background: var(--blue-soft); color: var(--blue-ink); }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 20px 60px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── common blocks ── */
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .pad { padding: 24px; }
+  .section { margin-top: 36px; scroll-margin-top: 80px; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 21px; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .kicker { font-size: 13px; font-weight: 700; color: var(--blue); letter-spacing: .02em; }
+  .muted { color: var(--muted); }
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #f0f2f5; color: var(--ink-2); }
+  .b-blue { background: var(--blue-soft); color: var(--blue-ink); }
+  .b-green { background: var(--green-soft); color: var(--green); }
+  .b-yellow { background: var(--yellow-soft); color: var(--yellow); }
+  .b-red { background: var(--red-soft); color: var(--red); }
+  .btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 9px 15px; border-radius: 10px; font-size: 14.5px; font-weight: 600; cursor: pointer; transition: background .15s, border-color .15s; }
+  .btn:hover { background: #f5f7fa; text-decoration: none; }
+  .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .btn.primary:hover { background: #1765cc; }
+  .btn.sm { padding: 6px 11px; font-size: 13px; border-radius: 8px; }
+  .btn .ico { font-size: 15px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #f8f9fb; font-weight: 700; color: var(--ink-2); font-size: 13.5px; }
+  tr:last-child td { border-bottom: none; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+  .callout { border-radius: 12px; padding: 14px 16px; font-size: 15px; display: flex; gap: 10px; }
+  .callout.info { background: var(--blue-soft); color: #1d3b6e; }
+  .callout.ok { background: var(--green-soft); color: #14532d; }
+  .callout.warn { background: var(--yellow-soft); color: #6b3d00; }
+  .callout .ci { flex-shrink: 0; }
+  ul.clean, ol.clean { margin: 0; padding-left: 20px; }
+  ul.clean li, ol.clean li { margin: 4px 0; }
+
+  /* ── home ── */
+  .hero { padding: 34px 32px; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(66,133,244,.12), transparent 70%); }
+  .hero h1 { font-size: 32px; margin: 8px 0 10px; }
+  .hero p.lead { margin: 0; color: var(--ink-2); font-size: 16.5px; max-width: 720px; }
+  .hero .meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 20px; }
+  .hero .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .session { padding: 20px 22px; }
+  .session-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .session h3 { font-size: 17px; margin-bottom: 10px; }
+  .session ol { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+  .session li { counter-increment: s; position: relative; padding: 9px 10px 9px 38px; border-radius: 10px; }
+  .session li::before { content: counter(s); position: absolute; left: 8px; top: 9px; width: 22px; height: 22px; border-radius: 50%; background: #f0f2f5; font-size: 12.5px; font-weight: 700; display: grid; place-items: center; color: var(--ink-2); }
+  .session li a { color: var(--ink); display: block; }
+  .session li:hover { background: #f5f7fa; }
+  .session li:hover a { text-decoration: none; color: var(--blue-ink); }
+  .quick a { display: block; padding: 14px 16px; color: var(--ink); }
+  .quick a:hover { text-decoration: none; border-color: #c7d7f5; background: #fafcff; }
+  .quick b { display: block; font-size: 15px; }
+  .quick small { color: var(--muted); font-size: 13px; }
+  .concept-card { padding: 20px 22px; }
+  .concept-card h3 { font-size: 17px; margin: 8px 0 8px; }
+  .concept-card p { margin: 0 0 10px; color: var(--ink-2); font-size: 15px; }
+  .steps-inline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14.5px; }
+  .steps-inline span { background: #fff; border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; }
+  .steps-inline em { font-style: normal; color: var(--muted); }
+  details.faq { border-bottom: 1px solid var(--line); }
+  details.faq:last-child { border-bottom: none; }
+  details.faq summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; gap: 10px; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::before { content: '＋'; color: var(--blue); font-weight: 700; }
+  details.faq[open] summary::before { content: '－'; }
+  details.faq .ans { padding: 0 18px 16px 44px; color: var(--ink-2); font-size: 15px; }
+
+  /* ── lab layout ── */
+  .lab-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 22px; align-items: start; }
+  .lab-side { position: sticky; top: 82px; max-height: calc(100vh - 100px); overflow-y: auto; padding: 14px; }
+  .lab-side .room { padding: 6px 8px 12px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .lab-side .room b { font-size: 16px; display: block; }
+  .lab-side .room small { color: var(--muted); font-size: 13px; }
+  .side-group { margin: 12px 0 4px; padding: 0 8px; }
+  .side-group b { font-size: 12.5px; color: var(--blue); letter-spacing: .03em; }
+  .side-group span { font-size: 13px; color: var(--ink-2); font-weight: 600; margin-left: 4px; }
+  .side-item { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: 10px; color: var(--ink-2); font-size: 14.5px; font-weight: 500; }
+  .side-item:hover { background: #f5f7fa; text-decoration: none; }
+  .side-item.active { background: var(--blue-soft); color: var(--blue-ink); font-weight: 700; }
+  .side-item .chk { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #c9ced6; flex-shrink: 0; display: grid; place-items: center; font-size: 11px; color: #fff; }
+  .side-item.done .chk { background: var(--green); border-color: var(--green); }
+  .side-item.done .chk::after { content: '✓'; }
+  .progress { margin: 4px 8px 10px; height: 6px; background: #eef1f5; border-radius: 999px; overflow: hidden; }
+  .progress i { display: block; height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
+  .side-select { display: none; width: 100%; padding: 11px 12px; font-size: 15px; border: 1px solid var(--line); border-radius: 10px; font-family: inherit; background: #fff; }
+
+  .lab { padding: 28px 30px; }
+  .lab-head .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .lab-head h2 { font-size: 26px; }
+  .lab-head p { margin: 8px 0 0; color: var(--ink-2); font-size: 16px; }
+  .lab-head .row { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+  .done-toggle { flex-shrink: 0; }
+  .done-toggle.on { background: var(--green-soft); border-color: #b7dfc3; color: var(--green); }
+  .link-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .link-row .btn.k-copy { background: var(--green); border-color: var(--green); color: #fff; }
+  .link-row .btn.k-copy:hover { background: #137333; }
+  .lab-block { margin-top: 28px; }
+  .lab-block h3 { font-size: 17px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .lab-block h3 .num { width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: #fff; font-size: 13px; display: grid; place-items: center; }
+  .concepts li { margin: 6px 0; }
+  ol.follow { list-style: none; padding: 0; margin: 0; counter-reset: f; }
+  ol.follow li { counter-increment: f; position: relative; padding: 10px 0 10px 40px; border-bottom: 1px dashed var(--line); }
+  ol.follow li:last-child { border-bottom: none; }
+  ol.follow li::before { content: counter(f); position: absolute; left: 0; top: 10px; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-soft); color: var(--blue-ink); font-weight: 700; font-size: 13.5px; display: grid; place-items: center; }
+  .prompt-box { background: #fbfaf6; border: 1px solid #ece6d3; border-radius: 12px; overflow: hidden; }
+  .box-bar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid #ece6d3; background: #f7f3e6; }
+  .box-bar .t { font-size: 13px; font-weight: 700; color: #6b5a1e; margin-right: auto; }
+  .prompt-box pre { margin: 0; padding: 16px 18px; white-space: pre-wrap; font-family: var(--font); font-size: 14.5px; line-height: 1.7; color: var(--ink); max-height: 360px; overflow: auto; }
+  .code-box { border-radius: 12px; overflow: hidden; background: var(--code-bg); border: 1px solid #1f2733; }
+  .code-tabs { display: flex; align-items: center; gap: 2px; padding: 6px 8px; background: #161b22; border-bottom: 1px solid #262c36; }
+  .code-tabs button.tab { background: transparent; border: 0; color: #9aa4b2; font-family: var(--mono); font-size: 13px; padding: 7px 12px; border-radius: 7px; cursor: pointer; }
+  .code-tabs button.tab.active { background: #2b3340; color: #fff; }
+  .code-tabs .spacer { flex: 1; }
+  .code-tabs .lines { color: #6e7681; font-size: 12px; margin-right: 6px; }
+  .btn.dark { background: #2b3340; border-color: #3a4352; color: #e6edf3; }
+  .btn.dark:hover { background: #3a4352; }
+  .code-box pre { margin: 0; max-height: 520px; overflow: auto; }
+  .code-box pre code { display: block; padding: 16px 18px; background: transparent; color: #e6edf3; font-size: 13.5px; line-height: 1.6; border-radius: 0; white-space: pre; }
+  .code-note { margin-bottom: 10px; }
+  .pager { display: flex; justify-content: space-between; gap: 10px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .pager a { max-width: 48%; }
+  .pager small { display: block; color: var(--muted); font-size: 12px; font-weight: 500; }
+
+  /* ── examples ── */
+  .ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .ex-card { display: flex; flex-direction: column; padding: 16px; color: var(--ink); min-height: 96px; }
+  .ex-card:hover { text-decoration: none; border-color: #c7d7f5; background: #fafcff; }
+  .ex-card b { font-size: 15.5px; }
+  .ex-card small { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .ex-card .go { margin-top: auto; padding-top: 10px; font-size: 12.5px; color: var(--blue); font-weight: 700; }
+
+  /* ── share ── */
+  .share-layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 22px; align-items: start; }
+  .form-field { margin-bottom: 14px; }
+  .form-field label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--ink-2); }
+  .form-field input, .form-field select, .form-field textarea, .search { width: 100%; padding: 11px 12px; font-size: 15px; font-family: inherit; border: 1px solid #d0d5dd; border-radius: 10px; background: #fff; color: var(--ink); }
+  .form-field textarea { resize: vertical; min-height: 76px; }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus, .search:focus { outline: 2px solid rgba(26,115,232,.25); border-color: var(--blue); }
+  .form-msg { font-size: 14px; font-weight: 600; min-height: 20px; margin-top: 10px; }
+  .form-msg.err { color: var(--red); } .form-msg.ok { color: var(--green); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { border: 1px solid var(--line); background: #fff; padding: 6px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--ink-2); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .share-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .share-tools .search { max-width: 260px; }
+  .share-card { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .share-card h4 { font-size: 16px; }
+  .share-card p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+  .share-card .who { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .share-card .btn { align-self: flex-start; margin-top: 6px; }
+  .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+
+  footer { border-top: 1px solid var(--line); background: #fff; }
+  footer .inner { max-width: 1200px; margin: 0 auto; padding: 22px 20px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  footer b { color: var(--ink-2); }
+
+  .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px); background: #1f2430; color: #fff; padding: 11px 18px; border-radius: 10px; font-size: 14.5px; opacity: 0; transition: .25s; pointer-events: none; z-index: 50; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 960px) {
+    .lab-layout, .share-layout { grid-template-columns: minmax(0, 1fr); }
+    .lab-side { position: static; max-height: none; }
+    .lab-side .side-list { display: none; }
+    .side-select { display: block; }
+    .g3 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    main { padding: 18px 16px 48px; }
+    .topbar-inner { padding: 0 12px; gap: 10px; height: auto; min-height: 56px; flex-wrap: wrap; padding-top: 8px; }
+    .brand small { display: none; }
+    nav.tabs { margin-left: 0; width: 100%; padding-bottom: 8px; }
+    .g2, .g3 { grid-template-columns: minmax(0, 1fr); }
+    .hero { padding: 24px 20px; }
+    .hero h1 { font-size: 25px; }
+    .lab { padding: 20px 18px; }
+    .lab-head h2 { font-size: 22px; }
+    .lab-head .row { flex-direction: column; }
+    .pad { padding: 18px; }
+    th, td { padding: 10px; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#home">
+      <span class="dots"><i></i><i></i><i></i><i></i></span>
+      <span><b>앱스 스크립트 실습실</b><small>2026 AI·디지털지식나눔교사 · 1~2차시</small></span>
+    </a>
+    <nav class="tabs" id="tabs">
+      <a href="#home" data-view="home">홈</a>
+      <a href="#standalone" data-view="standalone">독립형 실습</a>
+      <a href="#container" data-view="container">컨테이너형 실습</a>
+      <a href="#appsheet" data-view="appsheet">AppSheet</a>
+      <a href="#examples" data-view="examples">예제 모음</a>
+      <a href="#share" data-view="share">함께 공유</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="view" id="view-home"></section>
+  <section class="view" id="view-standalone"></section>
+  <section class="view" id="view-container"></section>
+  <section class="view" id="view-appsheet"></section>
+  <section class="view" id="view-examples"></section>
+  <section class="view" id="view-share"></section>
+</main>
+
+<footer>
+  <div class="inner">
+    <span>자료 제작 · <b>비산초등학교 신동영</b></span>
+    <span>2026 AI·디지털지식나눔교사(1기) 구글 앱스 스크립트 활용</span>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+ * '함께 공유' 게시판 연결 주소
+ * 공유 탭의 [강사용 설정 방법]대로 Apps Script 웹앱을 배포한 뒤
+ * 발급된 웹 앱 URL(…/exec)을 아래 따옴표 안에 붙여 넣으세요.
+ * ============================================================ */
+const SHARE_API_URL = '';
+</script>
+<script>
+/* 실습 웹앱 콘텐츠 데이터
+ * - 텍스트 안의 **굵게**, `코드` 표기는 화면에서 서식으로 바뀝니다.
+ * - files[].src 는 src/code/ 폴더의 파일 이름이며, build.js가 내용을 끼워 넣습니다.
+ */
+window.APP_DATA = {
+  course: {
+    title: '구글 앱스 스크립트 실습실',
+    subtitle: '2026 AI·디지털지식나눔교사 · 1~2차시',
+    date: '2026. 10. 15.(목) 19:00~21:00',
+    author: '비산초등학교 신동영'
+  },
+
+  quickLinks: [
+    { label: '새 독립형 스크립트', url: 'https://script.new', note: 'script.new' },
+    { label: '새 스프레드시트', url: 'https://sheet.new', note: 'sheet.new' },
+    { label: 'Apps Script 내 프로젝트', url: 'https://script.google.com/home', note: '모든 프로젝트 보기' },
+    { label: 'Gemini', url: 'https://gemini.google.com/', note: '코드 생성(바이브 코딩)' },
+    { label: 'Google AI Studio', url: 'https://aistudio.google.com/', note: 'Gemini API 키 발급' },
+    { label: 'AppSheet', url: 'https://www.appsheet.com/', note: '노코드 앱 제작' }
+  ],
+
+  /* ───────── 강의 흐름 ───────── */
+  sessions: [
+    {
+      no: '1차시', time: '19:00~20:00', title: '구글 앱스 스크립트 활용 ①',
+      items: [
+        { text: '구글 도구 전체 살펴보기 · 바이브 코딩이란', go: 'home/concepts' },
+        { text: '독립형 실습실: 상장 · 시트 · 설문 · 캘린더 자동 생성', go: 'standalone' },
+        { text: 'STEP 1 구조 이해하기: 영재 이수자 명단 · 연수 수료자 명단', go: 'container/c-gifted' },
+        { text: '프롬프트로 스크립트 생성 · 메뉴(onOpen) · 트리거 이해', go: 'home/triggers' }
+      ]
+    },
+    {
+      no: '2차시', time: '20:00~21:00', title: '구글 앱스 스크립트 활용 ②',
+      items: [
+        { text: 'STEP 2 웹앱 만들기: 감정일기 · 소감 나눔함 · 실행 계정/접근 범위', go: 'container/c-emotion' },
+        { text: '평가 기록 남기기: 게임형 문제 → 결과가 시트에 저장', go: 'container/c-game' },
+        { text: 'STEP 3 연수 자동 등록부 → STEP 4 메일 자동 발송', go: 'container/c-register' },
+        { text: 'STEP 5 AppSheet 실습 및 Apps Script와 비교 → 작품 공유', go: 'appsheet' }
+      ]
+    }
+  ],
+
+  /* ───────── 독립형 실습실 ───────── */
+  standalone: [
+    {
+      id: 's-awards', title: '구글 문서: 상장 자동 생성', service: 'Docs',
+      level: '쉬움', time: '10분',
+      summary: '학생 목록을 돌며 구글 문서 하나에 학생마다 한 페이지씩 상장을 만듭니다.',
+      concepts: [
+        '`DocumentApp.create()`로 새 문서를 만들고 `getBody()`로 본문을 다룹니다.',
+        '`appendPageBreak()`로 학생마다 페이지를 나눕니다.'
+      ],
+      steps: [
+        '주소창에 `script.new`를 입력해 새 독립형 프로젝트를 엽니다.',
+        '기본으로 들어 있는 `function myFunction() {}`을 지우고 아래 코드를 붙여 넣습니다.',
+        '저장(Ctrl+S) → 함수 목록에서 `makeAwardsOneDoc` 선택 → 실행(▶)',
+        '처음 실행할 때 권한 승인 창이 뜨면 승인합니다. (홈 화면의 ‘권한 승인’ 참고)',
+        '실행 로그에 찍힌 문서 주소를 눌러 결과를 확인합니다.'
+      ],
+      prompt:
+`아래 데이터로 구글 문서 상장을 자동으로 만드는 Apps Script 코드를 짜줘.
+시트는 없고, 독립형 앱스 스크립트야.
+
+조건:
+- 한 문서 안에 학생마다 한 페이지씩
+- 이름과 수상 내역은 데이터에서 가져오기
+- 제목은 가운데 정렬, 36pt, 굵게
+- 날짜는 2026년 10월 15일
+- 학교명은 '구글초등학교'
+- 완료 후 실행 로그에 문서 주소 출력
+
+데이터:
+이름 수상내역
+홍길동 모범상
+김철수 우수상
+이영희 장려상`,
+      files: [{ name: 'Code.gs', src: 'awards.gs' }],
+      result: '내 드라이브에 ‘2026 상장 모음’ 문서가 생기고, 홍길동·김철수·이영희의 상장이 한 페이지씩 들어 있습니다.',
+      tips: ['문서 하나에 모든 상장이 들어 있어 Ctrl+P 한 번으로 한꺼번에 인쇄할 수 있습니다.']
+    },
+    {
+      id: 's-sheets', title: '구글 시트: 교무 업무 시트 3종 생성', service: 'Sheets',
+      level: '보통', time: '10분',
+      summary: '‘교무부 업무 시트’를 새로 만들고 연수 이수 관리 · 연간 업무 계획 · 학교 평가 시트를 서식과 함께 채웁니다.',
+      concepts: [
+        '`SpreadsheetApp.create()`로 독립형에서도 새 시트를 만들 수 있습니다.',
+        '드롭다운(`newDataValidation`)과 조건부 서식(`newConditionalFormatRule`)을 코드로 설정합니다.',
+        '자주 쓰는 동작은 `styleHeader_()`처럼 작은 함수로 묶어 다시 씁니다.'
+      ],
+      steps: [
+        '`script.new`로 새 독립형 프로젝트를 엽니다.',
+        '기본 코드를 지우고 아래 코드를 붙여 넣은 뒤 저장합니다.',
+        '함수 목록에서 `createAllSheets` 선택 → 실행(▶) → 권한 승인',
+        '실행 로그의 시트 주소를 눌러 3개 시트와 드롭다운·색상을 확인합니다.'
+      ],
+      prompt:
+`구글 드라이브에 '교무부 업무 시트'라는 스프레드시트를 새로 만드는 독립형 Apps Script 코드를 작성해줘.
+
+- 시트 3개: 연수 이수 관리, 연간 업무 계획, 학교 평가
+- 각 시트 1행에 머리글을 넣고 색을 칠한 뒤 1행 고정
+- 연수 종류, 월, 상태, 달성 여부 열은 드롭다운으로 제한
+- 상태가 완료/진행중/보류이면 행 전체 색이 바뀌는 조건부 서식
+- 예시 데이터 2~3줄 (날짜는 2026년 10월)
+- 처음 생기는 빈 시트(시트1)는 삭제
+- 완료 후 실행 로그에 시트 주소 출력`,
+      files: [{ name: 'Code.gs', src: 'teacherSheets.gs' }],
+      result: '드라이브에 ‘교무부 업무 시트’가 생기고, 상태 값을 바꾸면 행 색이 자동으로 바뀝니다.',
+      tips: ['독립형 스크립트에는 열려 있는 시트 화면이 없으므로 `alert` 대신 `Logger.log`로 결과를 알립니다.']
+    },
+    {
+      id: 's-form', title: '구글 설문지: 방과후 희망서 생성', service: 'Forms',
+      level: '보통', time: '10분',
+      summary: '단답형 · 객관식 · 장문형 문항이 들어간 방과후 캠프 희망서를 코드로 만듭니다.',
+      concepts: [
+        '`FormApp.create()` 후 `addTextItem()`, `addMultipleChoiceItem()`, `addParagraphTextItem()`으로 문항을 추가합니다.',
+        '`setRequired(true)`로 필수 문항을 지정합니다.',
+        '`getEditUrl()`(교사용)과 `getPublishedUrl()`(응답용) 주소를 구분합니다.'
+      ],
+      steps: [
+        '`script.new`로 새 독립형 프로젝트를 엽니다.',
+        '기본 코드를 지우고 아래 코드를 붙여 넣은 뒤 저장합니다.',
+        '함수 목록에서 `buildSurvey` 선택 → 실행(▶) → 권한 승인',
+        '실행 로그의 [배포용] 주소를 열어 응답 화면을 확인합니다.'
+      ],
+      prompt:
+`구글 드라이브에 방과후 신청 설문지를 자동으로 만드는 독립형 Apps Script 코드를 작성해줘.
+
+1. 제목: '2026학년도 2학기 방과후 특기적성 캠프 희망서'
+2. 설명: 11월 운영 예정, 신청 기한 2026년 10월 30일(금)
+3. 문항
+   - 학생 성명 (필수, 단답형)
+   - 학년·반·번호 (필수, 도움말 '예: 6학년 1반 15번')
+   - 수강 희망 강좌 (필수, 객관식: 드론 비행 조종 코스 / 파이썬 로봇 코딩 코스 / 태블릿 디지털 드로잉 코스)
+   - 요청 사항 (선택, 장문형)
+4. 끝나면 교사용 편집 주소와 학생용 응답 주소를 실행 로그에 구분해서 출력`,
+      files: [{ name: 'Code.gs', src: 'afterSchoolForm.gs' }],
+      result: '드라이브에 설문지가 생기고, [배포용] 주소로 들어가면 바로 응답할 수 있습니다.',
+      tips: ['설문지 [응답] 탭 → ‘Sheets에 연결’을 누르면 응답이 시트에 쌓입니다. 이 시트는 STEP 4 메일 자동 발송 실습과 같은 구조입니다.']
+    },
+    {
+      id: 's-calendar', title: '구글 캘린더: 학사 일정 일괄 등록', service: 'Calendar',
+      level: '보통', time: '10분',
+      summary: '일정 목록을 내 기본 캘린더에 종일 일정으로 한 번에 등록합니다. 같은 일정은 두 번 등록하지 않습니다.',
+      concepts: [
+        '`CalendarApp.getDefaultCalendar()`로 내 기본 캘린더를 가져옵니다.',
+        '`createAllDayEvent(제목, 날짜, 옵션)`으로 종일 일정을 만듭니다.',
+        '`getEventsForDay()`로 같은 날 같은 제목이 있는지 확인해 중복을 막습니다.'
+      ],
+      steps: [
+        '`script.new`로 새 독립형 프로젝트를 엽니다.',
+        '왼쪽 ⚙ 프로젝트 설정에서 시간대가 ‘(GMT+09:00) 서울’인지 확인합니다.',
+        '기본 코드를 지우고 아래 코드를 붙여 넣은 뒤 저장합니다.',
+        '함수 목록에서 `syncDefaultCalendar` 선택 → 실행(▶) → 권한 승인',
+        '구글 캘린더에서 10월 22일 · 10월 30일 · 11월 12일 일정을 확인합니다.'
+      ],
+      prompt:
+`내 구글 기본 캘린더에 아래 학사 일정을 종일 일정으로 한 번에 등록하는 독립형 Apps Script 코드를 작성해줘.
+
+- 일정은 코드 위쪽 배열에 날짜·제목·장소로 정리
+- 같은 날 같은 제목의 일정이 이미 있으면 건너뛰기
+- 날짜가 하루씩 밀리지 않도록 한국 시간 기준으로 처리
+- 등록 결과를 실행 로그에 한 줄씩 출력
+
+일정:
+2026-10-22 2학기 학부모 공개수업 (각 학급 교실)
+2026-10-30 방과후 캠프 희망서 마감 (교무실)
+2026-11-12 과학탐구 발표대회 (강당)`,
+      files: [{ name: 'Code.gs', src: 'calendar.gs' }],
+      result: '캘린더의 해당 날짜에 종일 일정 3개가 등록됩니다. 다시 실행해도 같은 일정이 중복으로 생기지 않습니다.',
+      tips: [
+        '`new Date("2026-10-22")`는 UTC 기준으로 해석되어 시간대에 따라 하루 전 날짜로 등록될 수 있습니다. 코드의 `toLocalDate_()`처럼 연·월·일을 나눠 만드는 것이 안전합니다.',
+        '시트에 정리한 연간 일정을 `getValues()`로 읽어 오면 수십 개 일정도 한 번에 옮길 수 있습니다.'
+      ]
+    }
+  ],
+
+  /* ───────── 컨테이너형 실습실 (패들렛 순서) ───────── */
+  containerGroups: [
+    { id: 'step1', label: 'STEP 1', title: '구조 이해하기', desc: '시트 데이터를 읽고(getValues) 쓰고(setValues), 메뉴(onOpen)로 실행하는 기본 구조' },
+    { id: 'step2', label: 'STEP 2', title: '웹앱 형태로 만들기', desc: 'Code.gs(서버) + index.html(화면)으로 만든 웹앱을 배포하고 결과를 시트에 기록' },
+    { id: 'step3', label: 'STEP 3', title: '연수 자동 등록부', desc: '이름 입력 → 손글씨 서명 → 시트에 이미지로 저장' },
+    { id: 'step4', label: 'STEP 4', title: '메일 자동 발송', desc: '구글폼 제출 → 설치형 트리거 → 확인 메일 자동 발송' },
+    { id: 'more', label: '심화', title: '더 해보기', desc: '성적 관리 메뉴, Gemini API 연동' }
+  ],
+
+  container: [
+    {
+      id: 'c-gifted', group: 'step1', title: '영재 이수자 명단 → 생기부 문구', service: 'Sheets',
+      level: '쉬움', time: '15분',
+      summary: '이름·학년·구분·영역·이수 시간을 읽어 F열에 학교생활기록부 입력 문구를 자동으로 만듭니다.',
+      concepts: [
+        '`getRange(2, 1, 행 수, 5).getValues()`로 A~E열을 **한 번에** 읽고, `setValues()`로 F열에 **한 번에** 씁니다.',
+        '`onOpen()`은 시트를 열 때 자동 실행되는 단순 트리거로, 상단에 [생기부 문구] 메뉴를 만듭니다.',
+        '총 시간(120)처럼 바뀔 수 있는 값은 코드 위쪽 **상수**로 빼 둡니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '실습용 서식 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1d4Kz_7K-lJ-JHv0A35a_Dl7Yj5Skx_9o_4HZnF9DEK4/copy?usp=sharing' },
+        { kind: 'done', label: '완성본 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1AA2VvW9S6Ot9v3Sfnsj_RDrm2ZRmiysj4iEPmAFFLu0/copy?usp=sharing' },
+        { kind: 'gist', label: '코드 원본(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/b724f5d110664a68e1aaf15ad1479e6c' }
+      ],
+      steps: [
+        '[실습용 서식 시트 복사] → ‘사본 만들기’를 누릅니다.',
+        '복사한 시트에서 확장 프로그램 → Apps Script를 엽니다.',
+        '아래 프롬프트를 Gemini에 넣어 코드를 받거나, 완성 코드를 붙여 넣고 저장합니다.',
+        '시트 탭으로 돌아가 새로고침(F5) → 잠시 후 상단에 [생기부 문구] 메뉴가 생깁니다.',
+        '[생기부 문구] → [문구 생성] → 처음 한 번 권한 승인 → F열 결과 확인'
+      ],
+      prompt:
+`구글 시트용 Apps Script 코드를 만들어줘.
+
+시트 구조(1행 헤더): A 이름 | B 학년 | C 구분 | D 영역 | E 이수 시간 | F 생성 문구
+
+2행부터 각 행을 읽어 F열에 아래 형식의 문장을 넣어줘.
+"{구분}에서 {학년}학년 과정 {영역} 영역(120시간) {이수 시간}시간을 이수함."
+
+예) 영재학급에서 2학년 과정 정보 영역(120시간) 110시간을 이수함.
+
+조건
+- 시트 상단에 [생기부 문구] 메뉴를 만들고 '문구 생성', '문구 지우기' 두 항목을 넣어줘
+- 빈 행은 건너뛰고, 총 시간(120)은 상단 상수로 빼줘
+- 완료 후 몇 명을 생성했는지 알림창으로 보여줘`,
+      files: [{ name: 'Code.gs', src: 'gifted.gs' }],
+      result: 'F열에 “영재학급에서 2학년 과정 정보 영역(120시간) 110시간을 이수함.” 형식의 문구가 채워지고, 몇 명을 만들었는지 알림창이 뜹니다.',
+      tips: ['메뉴가 보이지 않으면 시트를 새로고침한 뒤 3~5초 기다려 보세요. 코드를 저장하지 않았거나 함수 이름이 `onOpen`이 아니면 메뉴가 생기지 않습니다.']
+    },
+    {
+      id: 'c-cert', group: 'step1', title: '연수 수료자 명단 → 축하 문구', service: 'Sheets',
+      level: '쉬움', time: '10분',
+      summary: 'A열의 이름을 한 줄씩 읽어 B열에 “○○ 님, 연수 수료를 축하합니다!”를 씁니다. 반복문의 기본 구조를 익힙니다.',
+      concepts: [
+        '`for (let row = 2; row <= lastRow; row++)` — 2행부터 마지막 행까지 반복합니다.',
+        '`getRange(행, 열).getValue()`로 한 칸 읽기, `setValue()`로 한 칸 쓰기',
+        '시트의 행·열 번호는 1부터, 배열 번호는 0부터 시작합니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '실습용 서식 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1uulQmBEmG1g9xNLYOuggcL3OmRnSsQ9hjgq8bKMdC8Y/copy?usp=sharing' },
+        { kind: 'done', label: '완성본 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1TJEH9VNbujedlNt6bxwTDQHeSRMv4NPB-FdpYtTqbTM/copy?usp=sharing' },
+        { kind: 'gist', label: '코드 원본(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/2423bd4c8baaf45bb3fd8421059fdb14' }
+      ],
+      steps: [
+        '[실습용 서식 시트 복사] → ‘사본 만들기’',
+        '확장 프로그램 → Apps Script → 코드 붙여 넣기 → 저장',
+        '먼저 함수 목록에서 `greetAll`을 골라 ▶ 실행해 보고 B열을 확인합니다.',
+        '시트를 새로고침하면 [연수 도구] 메뉴가 생깁니다. [B열 지우기] → [문구 일괄 생성]으로 다시 실행해 봅니다.'
+      ],
+      prompt:
+`구글 시트용 Apps Script 코드를 만들어줘. A열에 연수 수료자 이름이 있어(1행은 헤더).
+2행부터 마지막 행까지 A열 이름을 읽어 "{이름} 님, 연수 수료를 축하합니다!"를 B열에 쓰게 해줘.
+그리고 시트를 열면 "연수 도구" 메뉴에 "문구 일괄 생성"과 "B열 지우기" 항목이 생기게 해줘.
+한글 주석을 달아줘.`,
+      files: [{ name: 'Code.gs', src: 'certificate.gs' }],
+      result: 'B열에 수료 축하 문구가 채워지고, 상단 [연수 도구] 메뉴로 언제든 다시 실행할 수 있습니다.',
+      tips: ['영재 이수자 명단 코드는 `getValues()`로 한 번에 읽고, 이 코드는 한 칸씩 읽습니다. 데이터가 많을수록 한 번에 읽고 쓰는 방식이 훨씬 빠릅니다.']
+    },
+    {
+      id: 'c-emotion', group: 'step2', title: '우리 반 감정일기 웹앱', service: 'Web App',
+      level: '보통', time: '20분',
+      summary: '학생이 휴대폰으로 이름과 오늘의 기분을 보내면 교사의 시트에 시간과 함께 한 줄씩 쌓입니다.',
+      concepts: [
+        '`doGet()` — 웹앱 주소로 접속하면 `index.html` 화면을 돌려줍니다.',
+        '`google.script.run.saveEmotion(...)` — 화면(HTML)에서 서버 함수(Code.gs)를 부릅니다.',
+        '`appendRow()` — 시트 맨 아래에 새 행을 추가합니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '실습용 서식 시트 복사', url: 'https://docs.google.com/spreadsheets/d/10weJD6qrIZUyl2xqA2TkEA99bo64Eby2A04uY3zMeI8/copy?usp=sharing' },
+        { kind: 'app', label: '완성 웹앱 체험', url: 'https://script.google.com/macros/s/AKfycbz-ZW0PgK6H1rb2ocwf-jB_6gJD99F7KsPIqXaBclAGLO5a-hFxL95iS-cDFQ0I9CtQ/exec' },
+        { kind: 'gist', label: '코드 원본(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/d6afc9341afeccce9972981508ad522f' }
+      ],
+      steps: [
+        '[실습용 서식 시트 복사] → 확장 프로그램 → Apps Script',
+        '`Code.gs`에 서버 코드를 붙여 넣습니다.',
+        '파일 옆 ＋ → HTML → 이름을 `index`로 입력(확장자 .html은 자동) → 화면 코드를 붙여 넣고 저장',
+        '오른쪽 위 배포 → 새 배포 → ⚙ 유형 선택: 웹 앱',
+        '실행 사용자: **나** / 액세스 권한: **모든 사용자** → 배포 → 권한 승인',
+        '발급된 웹 앱 URL(…/exec)을 열어 기분을 보내고, 시트에 기록되는지 확인합니다.'
+      ],
+      prompt:
+`구글 스프레드시트에 적용할 앱스 스크립트를 작성할 거야.
+서버는 code.gs 파일이고, 웹앱의 첫 화면은 index.html이야. 두 개를 구분해서 작성해줘.
+
+스프레드시트 A열에는 학생 이름, B열에는 학생이 적은 오늘의 감정, C열에는 제출 일시(한국 시간)가 기록될 거야.
+index.html에는 학생 이름을 적는 칸, 오늘의 감정을 적는 칸, 제출 버튼이 필요해.
+빈칸은 제출되지 않게 하고, 제출 중에는 버튼을 여러 번 누르지 못하게 해줘.
+학생이 쉽게 쓸 수 있도록 아동 친화적인 디자인으로 만들어줘.`,
+      files: [
+        { name: 'Code.gs', src: 'emotion_code.gs' },
+        { name: 'index.html', src: 'emotion_index.html' }
+      ],
+      result: '웹앱에서 보낸 이름 · 기분 · 일시가 시트 맨 아래에 한 줄씩 추가됩니다. 주소를 QR코드로 만들어 학생에게 나눠 주면 바로 쓸 수 있습니다.',
+      tips: [
+        '코드를 고친 뒤에는 배포 → **배포 관리** → 연필(수정) → 버전: **새 버전** → 배포를 눌러야 같은 주소에 반영됩니다. ‘새 배포’를 누르면 주소가 바뀝니다.',
+        '학생 이름 같은 개인정보가 쌓이는 시트는 공유 범위를 ‘제한됨’으로 두세요.'
+      ]
+    },
+    {
+      id: 'c-feedback', group: 'step2', title: '연수 소감 나눔함 웹앱', service: 'Web App',
+      level: '보통', time: '15분',
+      summary: '연수 참가자가 한줄 소감이나 질문을 남기면 시트에 쌓이는 업무용 웹앱입니다. 감정일기와 같은 구조를 다른 업무에 적용해 봅니다.',
+      concepts: [
+        '같은 `doGet` + `google.script.run` 구조로 화면과 문구만 바꾸면 다른 업무 도구가 됩니다.',
+        '서버 함수에서 `throw new Error()`를 하면 화면의 `withFailureHandler`로 오류 메시지가 전달됩니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '실습용 서식 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1hwjNHFp1CbEWxHqSiHoc4ffoESxwgUeO19ekPt-Ml0U/copy?usp=sharing' },
+        { kind: 'done', label: '완성본 시트 복사', url: 'https://docs.google.com/spreadsheets/d/18q9ck77W0CGZq2yWMie_4ECy90qzY9Cn7ev0kxpV3Bs/copy?usp=sharing' },
+        { kind: 'gist', label: '코드 원본(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/40876cdf0e3cf93ff583898636070c95' }
+      ],
+      steps: [
+        '[실습용 서식 시트 복사] → 확장 프로그램 → Apps Script',
+        '`Code.gs`와 `index.html` 두 파일에 각각 코드를 붙여 넣고 저장',
+        '배포 → 새 배포 → 웹 앱 (실행: 나 / 액세스: 모든 사용자)',
+        '웹 앱 URL로 접속해 소감을 제출하고 시트를 확인합니다.',
+        '배지 문구, 안내 문장, 색을 우리 학교 연수에 맞게 바꿔 봅니다.'
+      ],
+      prompt:
+`구글 스프레드시트에 적용할 앱스 스크립트 웹앱을 만들어줘.
+
+[역할과 파일 구분]
+- 서버 코드는 code.gs, 웹앱 화면은 index.html — 두 파일을 구분해서 작성해줘.
+
+[데이터 구조]
+- 스프레드시트 A열: 이름(소속), B열: 한줄 소감 또는 질문, C열: 제출 일시
+- 제출 일시는 한국 시간(yyyy-MM-dd HH:mm:ss)으로 자동 기록해줘.
+
+[화면 구성]
+- 제목: "연수 소감 나눔함"
+- 이름(소속) 입력칸, 소감·질문 입력칸, 제출 버튼
+- 제출 성공/실패 안내 문구 표시, 제출 중 버튼 중복 클릭 방지
+- 빈칸 제출은 막아줘.
+
+[디자인]
+- 교원 연수장에서 쓸 것이므로 차분하고 신뢰감 있는 업무용 톤
+- 휴대폰 화면에서도 잘 보이게 반응형으로
+
+[기타]
+- 코드에 초보자용 한글 주석을 달아줘.
+- 웹앱 배포 방법도 단계별로 알려줘.`,
+      files: [
+        { name: 'Code.gs', src: 'feedback_code.gs' },
+        { name: 'index.html', src: 'feedback_index.html' }
+      ],
+      result: '제출한 소감이 시트에 이름 · 내용 · 일시로 기록되고, 화면에는 “소중한 의견이 제출되었습니다.”가 표시됩니다.',
+      tips: ['같은 틀로 ‘수업 질문함’, ‘출구 카드(Exit Ticket)’, ‘건의함’을 바로 만들 수 있습니다.']
+    },
+    {
+      id: 'c-game', group: 'step2', title: '게임형 문제 → 평가 기록 남기기', service: 'Web App',
+      level: '도전', time: '20분',
+      summary: '시트에 문제와 정답을 적으면 게임형 퀴즈 웹앱이 되고, 학생의 점수가 ‘결과’ 시트에 자동으로 저장됩니다.',
+      concepts: [
+        '시트 → 웹앱: `getQuestions()`가 A열(문제) · B열(정답)을 읽어 화면으로 보냅니다.',
+        '웹앱 → 시트: 게임이 끝나면 `saveResult()`가 이름 · 점수 · 정답 수를 기록합니다.',
+        '여러 학생이 동시에 저장해도 섞이지 않게 `LockService`를 사용합니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '게임형 문제 시트 복사(코드 포함)', url: 'https://docs.google.com/spreadsheets/d/1XSGy9ZVLY7Vu_nMKlF126cnIUZb99l2ihIEp65Kwv5I/copy?usp=sharing' },
+        { kind: 'gist', label: '던전 퀴즈 코드(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/dc3f3716d2151e0016a00979501d19d3' },
+        { kind: 'app', label: '역사 산성비 체험', url: 'https://script.google.com/macros/s/AKfycbyCHmo-A5qTO6iNNPnCGb4Pg1aBSqX-i6kZ880jJwEOf7C-HH5U8Tf-Wc8xuq43dj7G/exec' },
+        { kind: 'gist', label: '역사 산성비 코드(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/8c72f4978c3e1d9e802420e46789b567' }
+      ],
+      steps: [
+        '[게임형 문제 시트 복사]로 사본을 만듭니다. 사본에는 코드가 이미 들어 있습니다.',
+        '첫 번째 시트 A열(문제) · B열(정답)을 우리 교과 내용으로 바꿉니다.',
+        '확장 프로그램 → Apps Script → 배포 → 새 배포 → 웹 앱 (실행: 나 / 액세스: 모든 사용자)',
+        '웹 앱 URL로 게임을 해 본 뒤, ‘결과’ 시트에 점수가 기록되는지 확인합니다.'
+      ],
+      prompt:
+`구글 스프레드시트에 연결된 Apps Script로 게임형 퀴즈 웹앱을 만들어줘. code.gs와 index.html로 나눠줘.
+
+[시트]
+- 첫 번째 시트: A열 문제, B열 정답 (1행은 머리글)
+- '결과' 시트: 제출 시각, 이름, 점수, 정답 수, 전체 문제 수 (없으면 자동으로 만들기)
+
+[화면]
+- 시작 화면에서 이름 입력 → 게임 시작
+- 문제가 하나씩 나오고 정답을 입력하면 점수가 오르는 게임 (제한 시간과 생명 3개)
+- 게임이 끝나면 결과를 시트에 저장하고 상위 10명 순위를 보여줘
+- 초등학생이 좋아할 밝은 디자인, 휴대폰에서도 잘 보이게
+
+[기타]
+- 여러 명이 동시에 저장해도 섞이지 않게 LockService 사용
+- 한글 주석과 웹앱 배포 방법도 알려줘`,
+      result: '학생이 게임을 마칠 때마다 ‘결과’ 시트에 이름과 점수가 쌓여, 별도 채점 없이 형성평가 기록이 남습니다.',
+      tips: ['정답이 여러 개인 문제는 B열에 `세종대왕/세종`처럼 / 로 구분하도록 프롬프트에 요청해 보세요(역사 산성비 코드 참고).']
+    },
+    {
+      id: 'c-booking', group: 'step2', title: '[도전 과제] 특별실 예약 시스템', service: 'Web App',
+      level: '도전', time: '자율',
+      summary: '앞에서 익힌 구조를 응용해, 프롬프트만으로 특별실 예약 웹앱을 만들어 봅니다. 완성하면 ‘함께 공유’ 탭에 올려 주세요.',
+      concepts: [
+        '시트 2개(예약목록 · 장소)를 읽고 쓰는 웹앱',
+        '같은 시간 중복 예약을 `LockService`와 재확인으로 막기',
+        '배포 시 액세스를 ‘같은 도메인 사용자’로 두면 우리 학교 계정만 사용할 수 있습니다.'
+      ],
+      links: [
+        { kind: 'sheet', label: '새 스프레드시트 만들기', url: 'https://sheet.new' },
+        { kind: 'ai', label: 'Gemini 열기', url: 'https://gemini.google.com/' }
+      ],
+      steps: [
+        '새 스프레드시트에 ‘예약목록’, ‘장소’ 탭을 만들고 장소 탭에 특별실 이름을 적습니다.',
+        '아래 프롬프트를 Gemini에 넣어 `code.gs`, `index.html`을 받습니다.',
+        '오류가 나면 오류 메시지를 그대로 Gemini에 붙여 넣고 고쳐 달라고 합니다.',
+        '배포 후 웹 앱 URL을 ‘함께 공유’ 탭에 올립니다.'
+      ],
+      prompt:
+`구글 Apps Script 웹앱으로 '특별실 예약 시스템'을 만들어 줘. code.gs와 index.html 두 파일로 나눠 줘.
+
+[시트 구조]
+- 탭 '예약목록': A 예약일시, B 장소, C 사용일, D 교시, E 예약자, F 학년반, G 사용 목적 (1행 제목행)
+- 탭 '장소': A 장소명, B 사용가능 교시(쉼표로 구분)
+
+[화면(index.html)]
+1. 장소 드롭다운(장소 탭에서 불러오기), 날짜 선택, 교시 버튼들, 예약자·학년반·사용 목적 입력칸.
+2. 장소와 날짜를 고르면 이미 예약된 교시 버튼은 회색으로 비활성화하고 예약자 이름을 표시해 줘.
+3. 하단에 선택한 장소의 이번 주(월~금) × 교시(1~6) 예약 현황표를 보여 줘.
+4. 휴대폰에서도 보기 좋게, 글씨는 크고 버튼은 누르기 쉽게 만들어 줘.
+
+[동작(code.gs)]
+1. 예약 저장 직전에 같은 장소·날짜·교시 예약이 있는지 한 번 더 확인하고, 있으면 "이미 예약되었습니다" 메시지를 돌려줘. (LockService로 동시 예약 방지)
+2. 지난 날짜는 예약할 수 없게 해 줘.
+3. 예약에 성공하면 "예약 완료" 메시지와 함께 현황표를 새로고침해 줘.
+
+웹앱 배포 방법(실행 사용자: 나, 액세스: 같은 도메인 사용자)도 단계별로 알려 줘. 한국어 주석을 달아 줘.`,
+      result: '장소와 날짜를 고르면 남은 교시만 예약할 수 있고, 예약 내용이 ‘예약목록’ 시트에 쌓입니다.',
+      tips: ['개인 gmail 계정에는 ‘같은 도메인 사용자’ 옵션이 없습니다. 개인 계정으로 실습할 때는 ‘Google 계정이 있는 모든 사용자’를 고르세요.']
+    },
+    {
+      id: 'c-register', group: 'step3', title: '연수 자동 등록부 (출석 서명)', service: 'Web App',
+      level: '보통', time: '20분',
+      summary: '이름을 입력하고 손가락이나 마우스로 서명하면, 시트에 성함 · 일시 · 서명 이미지가 자동으로 기록됩니다.',
+      concepts: [
+        '`<canvas>`에 그린 서명을 PNG 이미지(`toDataURL`)로 바꿔 서버로 보냅니다.',
+        '`SpreadsheetApp.newCellImage()`로 서명 이미지를 셀 안에 넣습니다.',
+        '`createTemplateFromFile()` + `<?= ?>`로 연수 이름을 화면에 끼워 넣습니다.'
+      ],
+      links: [
+        { kind: 'done', label: '완성본 시트 복사(코드 포함)', url: 'https://docs.google.com/spreadsheets/d/1QXkkfIsDiNHrt3GpoNQ-1LcbGkH_VTojaDIPMYL2f1I/copy?usp=sharing' },
+        { kind: 'app', label: '완성 웹앱 체험', url: 'https://script.google.com/macros/s/AKfycbxfudTrVqaDv6Fxlyex9zKK5rQ4O7FIKLHe0WAoWqE6kWvz9PRtRLExJgKbnnRzmW4OHA/exec' }
+      ],
+      steps: [
+        '새 스프레드시트(`sheet.new`)를 만들거나 [완성본 시트 복사]로 사본을 만듭니다.',
+        '확장 프로그램 → Apps Script → `Code.gs`와 `index.html`(＋ → HTML → index)에 코드를 붙여 넣고 저장',
+        '`Code.gs` 맨 위 `TRAINING_NAME`을 우리 연수 이름으로 바꿉니다.',
+        '배포 → 새 배포 → 웹 앱 (실행: 나 / 액세스: 모든 사용자) → 권한 승인',
+        '웹 앱 URL을 휴대폰으로 열어 이름 입력 → 서명 → 등록하기 → 시트에서 서명 이미지 확인'
+      ],
+      prompt:
+`구글 Apps Script 웹앱으로 '연수 출석 서명부'를 만들어 줘. code.gs와 index.html 두 파일로 나눠 줘.
+
+[시트 구조]
+- 탭 '서명부': A 번호, B 이름, C 소속, D 서명일시, E 서명 이미지, F 서명 파일 링크 (1행 제목행)
+
+[화면(index.html)]
+1. 상단 제목 "[연수명] 출석 서명", 아래에 날짜를 작게 표시.
+2. 이름, 소속 입력칸.
+3. 손가락이나 마우스로 서명할 수 있는 서명 패드(흰 바탕, 검은 펜, 굵기 3px).
+   태블릿·휴대폰 터치에서도 화면이 스크롤되지 않고 서명이 잘 되게 해 줘.
+4. "다시 쓰기" 버튼과 "제출" 버튼.
+5. 이름이 비었거나 서명을 안 했으면 제출되지 않고 안내 메시지를 보여 줘.
+6. 제출하면 "서명이 완료되었습니다" 화면을 보여 주고, 3초 뒤 처음 화면으로 돌아가 다음 사람이 바로 서명할 수 있게 해 줘.
+7. 휴대폰에서도 보기 좋게, 글씨와 버튼은 크게.
+
+[동작(code.gs)]
+1. 서명은 PNG 이미지로 받아서 내 드라이브의 '[연수명] 서명' 폴더에 "이름_yyyyMMdd_HHmm.png"로 저장해 줘. 폴더가 없으면 만들어 줘.
+2. 시트에 번호(자동 증가), 이름, 소속, 서명일시("yyyy-MM-dd HH:mm:ss")를 기록해 줘.
+3. E열 셀 안에 서명 이미지가 직접 보이도록 넣어 줘. (SpreadsheetApp.newCellImage 사용)
+4. F열에는 드라이브 파일 링크를 넣어 줘.
+5. 여러 명이 동시에 제출해도 섞이지 않게 LockService를 써 줘.
+
+웹앱 배포 방법(실행 사용자: 나, 액세스 권한: 모든 사용자)도 단계별로 알려 줘.
+코딩을 모르는 사람도 이해할 수 있게 한국어 주석을 달아 줘.`,
+      codeNote: '아래 코드는 완성본 시트와 같은 3열 구조(성함 · 일시 · 서명)의 간단한 버전입니다. 위 프롬프트는 드라이브 저장 · 소속 · 번호까지 넣은 확장 버전이니, Gemini로 만든 결과와 비교해 보세요.',
+      files: [
+        { name: 'Code.gs', src: 'register_code.gs' },
+        { name: 'index.html', src: 'register_index.html' }
+      ],
+      result: '서명할 때마다 시트에 성함 · 일시가 기록되고 C열 셀 안에 서명 이미지가 들어갑니다. 3초 뒤 첫 화면으로 돌아가 다음 사람이 이어서 서명할 수 있습니다.',
+      tips: ['연수장 입구에 태블릿 한 대를 두고 이 웹앱을 띄워 두면 종이 등록부 없이 출석을 받을 수 있습니다.']
+    },
+    {
+      id: 'c-mail', group: 'step4', title: '학부모·연수 신청 확인 메일 자동 발송', service: 'Gmail',
+      level: '보통', time: '15분',
+      summary: '구글폼이 제출되는 순간 설치형 트리거가 실행되어, 신청자에게 “신청이 완료되었습니다” 메일을 자동으로 보냅니다.',
+      concepts: [
+        '**설치형 트리거**(양식 제출 시)로 등록해야 메일이 발송됩니다. 단순 트리거로는 권한이 필요한 메일 발송을 할 수 없습니다.',
+        '트리거로 실행되면 `e.values`에 방금 제출된 응답 한 줄이 배열로 들어옵니다.',
+        '`MailApp.sendEmail(받는 사람, 제목, 본문)`'
+      ],
+      links: [
+        { kind: 'form', label: '실습용 구글폼 복사', url: 'https://docs.google.com/forms/d/1kj1vgeB09HvyCSQgdTrw1TlYZXnJixhWcJAMHLXImsY/copy' },
+        { kind: 'app', label: '테스트용 신청 폼', url: 'https://docs.google.com/forms/d/e/1FAIpQLSfrcg4Sb7Emb2AbvVJgHIgv2TxQX6BdEcghQtJaphax9DkhfQ/viewform?usp=header' },
+        { kind: 'gist', label: '코드 원본(gist)', url: 'https://gist.github.com/dongyoung21c-ctrl/5aa9ed2e5344d61fb1472d940728bab8' }
+      ],
+      steps: [
+        '[실습용 구글폼 복사]로 내 드라이브에 폼 사본을 만듭니다.',
+        '폼 [응답] 탭 → ‘Sheets에 연결’ → 새 스프레드시트 만들기',
+        '연결된 시트에서 B열이 이름, C열이 이메일인지 확인합니다. (다르면 코드의 `e.values[1]`, `e.values[2]` 번호를 바꿉니다.)',
+        '확장 프로그램 → Apps Script → 코드 붙여 넣고 저장',
+        '왼쪽 ⏰ 트리거 → ＋ 트리거 추가 → 함수: `onFormSubmit` / 이벤트 소스: 스프레드시트에서 / 이벤트 유형: 양식 제출 시 → 저장 → 권한 승인',
+        '폼에 내 이메일로 응답해 보고, 받은편지함을 확인합니다.'
+      ],
+      prompt:
+`앱스 스크립트를 활용하여 구글폼에 응답한 사람들에게 신청이 완료되었다는 내용의 메일을 발송하고자 해.
+
+구글 스프레드시트 B열에 신청자의 이름이 있고 C열에 사용하는 이메일 주소가 적혀 있어. 아래는 메일 내용이야. 앱스 스크립트 코드를 작성해줘.
+
+[메일 내용: '신청자 이름'님 AI 활용 연수 참가 신청이 완료되었습니다. 감사합니다.]`,
+      files: [{ name: 'Code.gs', src: 'mail.gs' }],
+      result: '폼을 제출하면 1분 안에 신청자 메일함에 ‘AI 활용 연수 참가 신청 완료 안내’ 메일이 도착합니다.',
+      tips: [
+        '하루 발송 한도: 개인 gmail 100통, 학교(Workspace) 계정 1,500통. 실습 때는 꼭 본인 메일로 먼저 테스트하세요.',
+        '트리거를 만들기 전에 쌓인 응답은 `sendToExisting` 함수를 ▶ 실행하면 한 번에 보내고 D열에 ‘발송완료’를 표시합니다.'
+      ]
+    },
+    {
+      id: 'c-grades', group: 'more', title: '성적 관리 메뉴: 생성 · 분류 · 색상', service: 'Sheets',
+      level: '보통', time: '15분',
+      summary: '메뉴 하나로 연습용 반별 점수표를 만들고, 90·80·70점 미만 학생을 분류하고, 점수에 따라 행 색을 자동으로 바꿉니다.',
+      concepts: [
+        '`getSheets()`로 모든 시트를 돌며 이름이 ‘반’으로 끝나는 시트만 처리합니다.',
+        '수식 조건부 서식 `=$C2>=90` — C열만 고정해 행 전체에 색을 칠합니다.',
+        '한 메뉴에 여러 기능을 묶으면 동료 교사가 코드를 보지 않고도 쓸 수 있습니다.'
+      ],
+      links: [
+        { kind: 'sheet', label: '새 스프레드시트 만들기', url: 'https://sheet.new' }
+      ],
+      steps: [
+        '새 스프레드시트를 만들고 확장 프로그램 → Apps Script → 코드 붙여 넣고 저장',
+        '시트를 새로고침하면 [📊 성적 관리] 메뉴가 생깁니다.',
+        '① 연습용 반별 시트 만들기 → 1~7반 점수표 생성',
+        '② 점수 분류 → ‘90점 미만’ 등 분류 시트 확인',
+        '③ 점수별 색상 표시 → 아무 학생 점수를 바꿔 색이 따라 바뀌는지 확인'
+      ],
+      prompt:
+`구글 스프레드시트가 열릴 때 "📊 성적 관리" 메뉴를 만드는 Apps Script 코드를 작성해줘.
+
+메뉴 항목
+1. 연습용 반별 시트 만들기: 1반~7반 시트에 학번·이름·점수(60~100 무작위) 20명씩
+2. 점수 분류: 이름이 '반'으로 끝나는 시트를 모두 돌며 90점 미만, 80점 미만, 70점 미만 학생을 각각의 시트에 모으기
+3. 점수별 색상 표시: 점수(C열)에 따라 행 전체 색이 바뀌는 조건부 서식 (90 이상 초록, 80 이상 노랑, 70 이상 주황, 70 미만 빨강)
+
+다시 실행해도 오류가 나지 않게 하고, 빈 칸은 분류에서 빼줘. 한글 주석을 달아줘.`,
+      files: [{ name: 'Code.gs', src: 'grades.gs' }],
+      result: '메뉴 세 번 클릭으로 반별 점수표 → 분류 시트 → 색상 표시까지 완성됩니다.',
+      tips: ['실제 성적에 쓸 때는 ①번 메뉴를 빼고 ②, ③만 남기세요. ①은 연습용 가상 데이터를 만듭니다.']
+    },
+    {
+      id: 'c-gemini', group: 'more', title: 'Gemini API 연동: 생기부 문장 초안', service: 'Gemini',
+      level: '도전', time: '20분',
+      summary: '시트 셀에 관찰 기록을 적으면 Gemini가 자율활동 · 행동특성 문장 초안을 써 줍니다. API 키를 넣어 직접 실행해 봅니다.',
+      concepts: [
+        '`UrlFetchApp.fetch()`로 Gemini API에 프롬프트와 데이터를 보내고, 응답(JSON)에서 문장을 꺼냅니다.',
+        '`@customfunction` 주석을 단 함수는 시트에서 `=함수이름(A2, B2, C2)`처럼 수식으로 쓸 수 있습니다.',
+        'API 키는 코드에 그대로 두지 말고 **프로젝트 설정 → 스크립트 속성**에 보관합니다.'
+      ],
+      links: [
+        { kind: 'copy', label: '자율활동 내용 생성 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1YcidbxCxRXicwbmlcXXiUOVFjyezi13GYPQHSBKfJQo/copy?usp=sharing' },
+        { kind: 'copy', label: '행동특성 생성 시트 복사', url: 'https://docs.google.com/spreadsheets/d/1O8N-rke05QIAFVVhmzFSiNaZFvi-XUOhnz4LtXQGLdM/copy?usp=sharing' },
+        { kind: 'ai', label: 'API 키 발급(AI Studio)', url: 'https://aistudio.google.com/apikey' }
+      ],
+      steps: [
+        'Google AI Studio에 로그인 → Get API key → Create API key → 키 복사',
+        '위 시트 중 하나를 복사 → 확장 프로그램 → Apps Script',
+        '코드 맨 위 API 키 자리에 복사한 키를 넣고 저장합니다.',
+        '시트로 돌아가 관찰 기록을 입력하고 결과 셀에 문장이 생성되는지 확인합니다.'
+      ],
+      result: '관찰 기록 3가지를 바탕으로 교사 관점의 문장 초안이 셀에 채워집니다.',
+      tips: [
+        '실습이 끝나면 키를 넣은 시트는 다른 사람과 공유하지 마세요. 키가 노출되었다면 AI Studio에서 삭제 후 새로 발급합니다.',
+        '모델 이름 오류(404)가 나면 AI Studio에서 현재 제공되는 모델 이름을 확인해 코드의 모델명을 바꿉니다.',
+        'AI가 쓴 문장은 항상 초안입니다. 학생 기록에 넣기 전 교사가 반드시 검토하세요.'
+      ]
+    }
+  ],
+
+  /* ───────── AppSheet ───────── */
+  appsheet: {
+    sheetCopy: 'https://docs.google.com/spreadsheets/d/1evkfSJXG1RL1NYe2lzJODGUYsOiGSNv6CYU1KEeGgJk/copy?usp=sharing',
+    portfolio: 'https://www.appsheet.com/portfolio/669896389',
+    columns: [
+      ['방문일', 'Date', '날짜 선택 달력이 자동으로 붙음'],
+      ['학교명', 'Text', '자주 쓰는 학교가 정해져 있다면 Enum으로'],
+      ['지원영역', 'Enum', '수업 · 평가 · 에듀테크 · 생활지도 등 선택지로'],
+      ['협의내용', 'LongText', '여러 줄 입력'],
+      ['후속조치', 'LongText', '여러 줄 입력'],
+      ['사진', 'Image', '휴대폰 카메라로 바로 촬영 · 드라이브에 저장']
+    ],
+    steps: [
+      '[서식 시트 복사]로 ‘컨설팅 방문 관리’ 시트 사본을 만듭니다. (방문일 · 학교명 · 지원영역 · 협의내용 · 후속조치 · 사진)',
+      '시트 메뉴 확장 프로그램 → AppSheet → **앱 만들기**를 누릅니다. 처음이면 AppSheet 로그인과 권한 동의가 나옵니다.',
+      'AppSheet가 시트를 읽어 앱을 자동으로 만듭니다. 오른쪽 미리보기에서 바로 앱을 눌러 볼 수 있습니다.',
+      '왼쪽 **Data** → 표의 열 유형(Type)을 아래 표처럼 맞춥니다. 특히 사진 열을 Image로 바꾸면 카메라 촬영 버튼이 생깁니다.',
+      '**Views**에서 보기 형태를 바꿔 봅니다. 예: 방문일 기준 Calendar 보기, 지원영역별 Chart 보기',
+      '미리보기에서 ＋를 눌러 방문 기록을 하나 추가하고, 원본 시트에 한 줄이 생겼는지 확인합니다.',
+      '오른쪽 위 **Share**로 동료에게 공유하거나, 휴대폰에 AppSheet 앱을 설치해 열어 봅니다.'
+    ],
+    prompt:
+`학교 컨설팅 방문 기록을 관리하는 앱을 만들어 줘.
+방문일, 학교명, 지원영역(수업, 평가, 에듀테크, 생활지도), 협의내용, 후속조치, 현장 사진을 기록하고
+방문일 기준 달력 보기와 지원영역별 건수 차트를 보여 줘.`,
+    compare: [
+      ['만드는 방법', '프롬프트로 코드를 받아 붙여 넣기 (코드 기반)', '시트를 연결하고 열 유형 · 화면을 설정 (노코드)'],
+      ['데이터', '구글 시트 (직접 읽고 쓰기)', '구글 시트 (앱이 자동으로 연결)'],
+      ['화면', 'HTML로 자유롭게 디자인 · 게임도 가능', '정해진 보기(목록 · 카드 · 달력 · 차트 · 지도)를 조합'],
+      ['강점', '메일 · 캘린더 · 문서 등 구글 서비스 자동화, 트리거', '사진 · 위치 · 바코드 입력, 휴대폰 앱처럼 사용, 빠른 제작'],
+      ['한계', '코드 오류를 직접 다뤄야 함', '복잡한 로직 · 자유로운 디자인은 어려움'],
+      ['비용', '구글 계정만 있으면 무료 (일일 할당량 내)', '만들기 · 테스트는 무료(테스트 사용자 10명까지), 정식 배포는 유료 플랜'],
+      ['어울리는 업무', '문구 자동 생성, 메일 발송, 출석 서명, 게임형 퀴즈', '방문 기록, 기자재 대여, 출결 체크, 시설 점검']
+    ],
+    picks: ['학급관리', '출석관리2', '과목별 출석체크', '할일관리', '시설 검사', '돌봄방문관리', 'QR코드생성', '구글앱스크립트 (Apps Script 연동 예제)'],
+    questions: [
+      '같은 ‘기록 앱’을 Apps Script(감정일기)와 AppSheet(방문 관리)로 만들어 보니 무엇이 달랐나요?',
+      '우리 학교 업무 중 코드 없이 AppSheet로 바로 만들 수 있는 것은 무엇일까요?',
+      '메일 발송처럼 자동화가 필요한 부분은 Apps Script와 어떻게 나눠 쓸 수 있을까요?'
+    ]
+  },
+
+  /* ───────── 예제 모음 ───────── */
+  examples: [
+    {
+      title: 'Apps Script 웹앱 예제', desc: '클릭하면 실제로 작동하는 완성 웹앱이 열립니다.',
+      items: [
+        { title: '동영쌤의 상담실', note: '학생 상담 신청', url: 'https://script.google.com/macros/s/AKfycbymsRcAJ3POuC2SpRL2tfO6gkS8kKipZg_2_dDPlLZIvJQqNIlnl0ipb5nd6Y9n4Hn63Q/exec' },
+        { title: '학급 채팅방', note: '시트를 저장소로 쓰는 채팅', url: 'https://script.google.com/macros/s/AKfycbykjIJ2ff51j1es3lqrYs9x4X-h3Xqt_0pRRA0SpL0KNu0Fq99Obxv_VNWPDzxyPJjHqA/exec' },
+        { title: '쌓기나무 스페이스 슈팅', note: '6-2 공간과 입체 · Claude 제작', url: 'https://script.google.com/macros/s/AKfycbywuAnSucAwoCQ8qK4PNDPY0ieSN2H-e8moiQZEiCTL4q7lnVBsG0uXUAiFXGmaq5pO/exec' },
+        { title: '분수 나눗셈 슈팅 게임', note: 'Gemini 제작', url: 'https://script.google.com/macros/s/AKfycbzO5HGziGDv_QMAQ6I-YbbpjbEDCBAyAMgTzht6L1VMMyoPebk2HXndLjBRt5u9HkMG/exec' },
+        { title: '역사 산성비', note: '시트 문제 → 타자 게임 · 점수 기록', url: 'https://script.google.com/macros/s/AKfycbyCHmo-A5qTO6iNNPnCGb4Pg1aBSqX-i6kZ880jJwEOf7C-HH5U8Tf-Wc8xuq43dj7G/exec' },
+        { title: '오늘의 감정 일기', note: 'STEP 2 완성본', url: 'https://script.google.com/macros/s/AKfycbz-ZW0PgK6H1rb2ocwf-jB_6gJD99F7KsPIqXaBclAGLO5a-hFxL95iS-cDFQ0I9CtQ/exec' },
+        { title: '연수 출석 서명부', note: 'STEP 3 완성본', url: 'https://script.google.com/macros/s/AKfycbxfudTrVqaDv6Fxlyex9zKK5rQ4O7FIKLHe0WAoWqE6kWvz9PRtRLExJgKbnnRzmW4OHA/exec' },
+        { title: '학교 급식 안내', note: '공공 API 활용 웹앱', url: 'https://bisanmeal.vercel.app/' }
+      ]
+    },
+    {
+      title: '완성본 · 서식 시트', desc: '‘사본 만들기’로 내 드라이브에 복사해 코드까지 살펴볼 수 있습니다.',
+      items: [
+        { title: '영재 이수자 명단 (완성본)', note: 'STEP 1', url: 'https://docs.google.com/spreadsheets/d/1AA2VvW9S6Ot9v3Sfnsj_RDrm2ZRmiysj4iEPmAFFLu0/copy?usp=sharing' },
+        { title: '연수 수료자 명단 (완성본)', note: 'STEP 1', url: 'https://docs.google.com/spreadsheets/d/1TJEH9VNbujedlNt6bxwTDQHeSRMv4NPB-FdpYtTqbTM/copy?usp=sharing' },
+        { title: '연수 소감 나눔함 (완성본)', note: 'STEP 2', url: 'https://docs.google.com/spreadsheets/d/18q9ck77W0CGZq2yWMie_4ECy90qzY9Cn7ev0kxpV3Bs/copy?usp=sharing' },
+        { title: '게임형 문제 생성기', note: 'STEP 2 · 평가 기록', url: 'https://docs.google.com/spreadsheets/d/1XSGy9ZVLY7Vu_nMKlF126cnIUZb99l2ihIEp65Kwv5I/copy?usp=sharing' },
+        { title: '연수 자동 등록부 (완성본)', note: 'STEP 3', url: 'https://docs.google.com/spreadsheets/d/1QXkkfIsDiNHrt3GpoNQ-1LcbGkH_VTojaDIPMYL2f1I/copy?usp=sharing' },
+        { title: 'AI 활용 연수 신청 (구글폼)', note: 'STEP 4', url: 'https://docs.google.com/forms/d/1kj1vgeB09HvyCSQgdTrw1TlYZXnJixhWcJAMHLXImsY/copy' },
+        { title: '자율활동 내용 생성', note: 'Gemini API 키 필요', url: 'https://docs.google.com/spreadsheets/d/1YcidbxCxRXicwbmlcXXiUOVFjyezi13GYPQHSBKfJQo/copy?usp=sharing' },
+        { title: '행동특성 생성', note: 'Gemini API 키 필요', url: 'https://docs.google.com/spreadsheets/d/1O8N-rke05QIAFVVhmzFSiNaZFvi-XUOhnz4LtXQGLdM/copy?usp=sharing' },
+        { title: '컨설팅 방문 관리', note: 'STEP 5 AppSheet', url: 'https://docs.google.com/spreadsheets/d/1evkfSJXG1RL1NYe2lzJODGUYsOiGSNv6CYU1KEeGgJk/copy?usp=sharing' }
+      ]
+    },
+    {
+      title: 'Gemini Canvas 바이브 코딩 예시', desc: '대화 한두 번으로 만든 단일 HTML 웹앱입니다.',
+      items: [
+        { title: '행운의 돌림판', note: '학급 추첨', url: 'https://gemini.google.com/share/97ef0521a864' },
+        { title: '라인빙고', note: '수업 놀이', url: 'https://gemini.google.com/share/a794e0078ec2' },
+        { title: '마리오 게임', note: '게임 제작', url: 'https://gemini.google.com/share/9c85a847b493' },
+        { title: '아두이노 I2C LCD', note: '피지컬 컴퓨팅 시뮬레이션', url: 'https://gemini.google.com/share/1290910f79c3' },
+        { title: '자동차 역사 게임', note: '교과 게임', url: 'https://gemini.google.com/share/f1a33390ed1e' }
+      ]
+    },
+    {
+      title: '참고 자료', desc: '생성형 AI 동향과 에듀테크 도구',
+      items: [
+        { title: 'Information is Beautiful', note: 'LLM 발전 시각화', url: 'https://informationisbeautiful.net/visualizations/the-rise-of-generative-ai-large-language-models-llms-like-chatgpt/' },
+        { title: 'LMArena 리더보드', note: 'AI 모델 순위', url: 'https://lmarena.ai/ko/leaderboard' },
+        { title: '에듀테크 모음', note: '분야별 에듀테크', url: 'https://edu-tech-korea-2025.lovable.app/' },
+        { title: 'Apps Script 공식 문서', note: 'Google for Developers', url: 'https://developers.google.com/apps-script?hl=ko' }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+window.CODE_FILES = {"awards.gs":"/**\n * [독립형] 상장 자동 생성기\n * 학생 목록을 돌며 구글 문서 하나에 학생마다 한 페이지씩 상장을 만듭니다.\n * 실행 함수: makeAwardsOneDoc\n */\n\nfunction makeAwardsOneDoc() {\n  const dateText = \"2026년 10월 15일\";\n  const schoolName = \"구글초등학교\";\n\n  // 상장을 받을 학생 목록\n  const students = [\n    { name: \"홍길동\", award: \"모범상\" },\n    { name: \"김철수\", award: \"우수상\" },\n    { name: \"이영희\", award: \"장려상\" },\n  ];\n\n  const doc = DocumentApp.create(\"2026 상장 모음\");\n  const body = doc.getBody();\n\n  // 문서 여백 설정\n  body.setMarginTop(80);\n  body.setMarginBottom(80);\n  body.setMarginLeft(60);\n  body.setMarginRight(60);\n\n  students.forEach((student, index) => {\n    // 두 번째 학생부터는 새 페이지에서 시작\n    if (index > 0) {\n      body.appendPageBreak();\n    }\n\n    body.appendParagraph(\"\").setSpacingAfter(30);\n\n    // 제목: 가운데 정렬, 36pt, 굵게\n    const title = body.appendParagraph(\"상    장\");\n    title.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    title.editAsText().setFontSize(36).setBold(true);\n\n    body.appendParagraph(\"\").setSpacingAfter(20);\n\n    // 이름\n    const nameLine = body.appendParagraph(student.name + \" 학생\");\n    nameLine.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    nameLine.editAsText().setFontSize(24).setBold(true);\n\n    body.appendParagraph(\"\").setSpacingAfter(10);\n\n    // 수상 내역\n    const awardLine = body.appendParagraph(student.award);\n    awardLine.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    awardLine.editAsText().setFontSize(28).setBold(true);\n\n    body.appendParagraph(\"\").setSpacingAfter(30);\n\n    // 본문\n    const content = body.appendParagraph(\n      \"위 학생은 학업과 생활 전반에 걸쳐\\n\" +\n      \"모범적인 자세로 꾸준히 노력하였기에\\n\" +\n      \"이 상장을 수여합니다.\"\n    );\n    content.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    content.editAsText().setFontSize(14).setBold(false);\n\n    body.appendParagraph(\"\").setSpacingAfter(40);\n\n    // 날짜\n    const dateLine = body.appendParagraph(dateText);\n    dateLine.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    dateLine.editAsText().setFontSize(13).setBold(false);\n\n    body.appendParagraph(\"\").setSpacingAfter(10);\n\n    // 학교명\n    const schoolLine = body.appendParagraph(schoolName + \"장\");\n    schoolLine.setAlignment(DocumentApp.HorizontalAlignment.CENTER);\n    schoolLine.editAsText().setFontSize(16).setBold(true);\n  });\n\n  doc.saveAndClose();\n\n  // 실행 로그에 결과와 문서 주소를 출력\n  Logger.log(\"✅ 완료! 총 \" + students.length + \"페이지 생성\");\n  Logger.log(\"🔗 문서 주소: \" + doc.getUrl());\n}\n","teacherSheets.gs":"/**\n * [독립형] 교무 업무 시트 3종 자동 생성\n * 드라이브에 '교무부 업무 시트'를 새로 만들고\n * 연수 이수 관리 · 연간 업무 계획 · 학교 평가 시트를 서식과 함께 채웁니다.\n * 실행 함수: createAllSheets\n */\n\nfunction createAllSheets() {\n  const ss = SpreadsheetApp.create('교무부 업무 시트');\n\n  // ── 1. 연수 이수 관리 ──────────────────────────\n  const s1 = ss.insertSheet('연수 이수 관리');\n  const h1 = ['번호', '교사명', '연수명', '연수 기관', '연수 종류', '이수 시간', '이수일', '비고'];\n  styleHeader_(s1, h1, '#1a73e8');\n\n  // 연수 종류는 목록에서만 고르도록 제한\n  setDropdown_(s1, 'E2:E200', ['직무연수', '자율연수', '원격연수', '집합연수']);\n\n  s1.getRange(2, 1, 2, 8).setValues([\n    [1, '홍길동', 'AI 활용 교육 직무연수', '경상북도교육청연수원', '직무연수', 30, '2026-10-15', ''],\n    [2, '김철수', '구글 앱스 스크립트 활용 연수', 'AI·디지털지식나눔', '원격연수', 4, '2026-10-22', ''],\n  ]);\n\n  // 오른쪽에 총 이수 시간 자동 합계\n  s1.getRange('J1').setValue('총 이수 시간').setFontWeight('bold');\n  s1.getRange('K1').setFormula('=SUM(F2:F200)').setFontWeight('bold');\n\n  setWidths_(s1, [50, 80, 220, 160, 100, 80, 100, 150]);\n\n  // ── 2. 연간 업무 계획 ──────────────────────────\n  const s2 = ss.insertSheet('연간 업무 계획');\n  const h2 = ['번호', '월', '업무명', '세부 내용', '담당자', '협조자', '기간', '상태', '비고'];\n  styleHeader_(s2, h2, '#0f9d58');\n\n  setDropdown_(s2, 'B2:B200', ['3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월', '1월', '2월']);\n  setDropdown_(s2, 'H2:H200', ['예정', '진행중', '완료', '보류', '취소']);\n\n  s2.getRange(2, 1, 3, 9).setValues([\n    [1, '10월', '학부모 공개수업', '수업 공개 및 협의회', '교무부장', '전 교사', '10월 22일', '진행중', ''],\n    [2, '10월', '2학기 방과후 수요조사', '캠프 희망서 접수', '방과후 담당', '', '10월 15~30일', '진행중', ''],\n    [3, '11월', '과학탐구 발표대회', '학년별 탐구 발표', '과학부', '연구부', '11월 중', '예정', ''],\n  ]);\n\n  // 상태(H열)에 따라 행 전체 색칠\n  colorRowsByStatus_(s2, 'A2:I200', 'H', { '완료': '#d9ead3', '진행중': '#cfe2f3', '보류': '#fff3cd' });\n  setWidths_(s2, [50, 60, 180, 220, 90, 80, 120, 80, 150]);\n\n  // ── 3. 학교 평가 ───────────────────────────────\n  const s3 = ss.insertSheet('학교 평가');\n  const h3 = ['번호', '평가 영역', '평가 지표', '평가 기준', '담당 부서', '담당자', '증빙 자료', '달성 여부', '비고'];\n  styleHeader_(s3, h3, '#e65100');\n\n  setDropdown_(s3, 'B2:B200', ['교육과정', '학생지도', '교원역량', '학교문화', '교육환경', '행정']);\n  setDropdown_(s3, 'H2:H200', ['달성', '미달성', '진행중', '해당없음']);\n\n  s3.getRange(2, 1, 3, 9).setValues([\n    [1, '교육과정', '교육과정 편성·운영', '교육과정 계획서 작성 및 실행', '교무부', '교무부장', '교육과정 편성표', '달성', ''],\n    [2, '교원역량', '교원 연수 이수율', '전 교원 연간 60시간 이상 이수', '연구부', '연구부장', '연수 이수 관리 시트', '진행중', ''],\n    [3, '학교문화', '학교폭력 예방 교육', '학기당 1회 이상 실시', '생활지도부', '담임', '교육 실시 일지', '달성', ''],\n  ]);\n\n  colorRowsByStatus_(s3, 'A2:I200', 'H', { '달성': '#d9ead3', '미달성': '#fce8e6', '진행중': '#cfe2f3' });\n  setWidths_(s3, [50, 90, 180, 220, 90, 80, 150, 80, 150]);\n\n  // 처음 만들어진 빈 시트 삭제 (새 시트를 만든 뒤에 지워야 오류가 나지 않음)\n  const defaultSheet = ss.getSheetByName('시트1') || ss.getSheetByName('Sheet1');\n  if (defaultSheet) ss.deleteSheet(defaultSheet);\n\n  // 독립형은 시트 화면이 없으므로 alert 대신 로그로 안내\n  Logger.log('✅ 완료! 시트 주소: ' + ss.getUrl());\n}\n\n// 1행 머리글 작성 + 색칠 + 고정\nfunction styleHeader_(sheet, headers, color) {\n  sheet.getRange(1, 1, 1, headers.length).setValues([headers])\n    .setBackground(color).setFontColor('#ffffff')\n    .setFontWeight('bold').setHorizontalAlignment('center');\n  sheet.setFrozenRows(1);\n}\n\n// 드롭다운(데이터 확인) 설정\nfunction setDropdown_(sheet, a1, list) {\n  sheet.getRange(a1).setDataValidation(\n    SpreadsheetApp.newDataValidation().requireValueInList(list).build()\n  );\n}\n\n// 열 너비 한 번에 지정\nfunction setWidths_(sheet, widths) {\n  widths.forEach((w, i) => sheet.setColumnWidth(i + 1, w));\n}\n\n// 상태 열 값에 따라 행 전체 배경색을 바꾸는 조건부 서식\nfunction colorRowsByStatus_(sheet, a1, statusCol, colorMap) {\n  const range = sheet.getRange(a1);\n  const rules = Object.keys(colorMap).map(status =>\n    SpreadsheetApp.newConditionalFormatRule()\n      .whenFormulaSatisfied('=$' + statusCol + '2=\"' + status + '\"')\n      .setBackground(colorMap[status])\n      .setRanges([range])\n      .build()\n  );\n  sheet.setConditionalFormatRules(rules);\n}\n","afterSchoolForm.gs":"/**\n * [독립형] 방과후 캠프 희망서(구글 설문지) 자동 생성\n * 실행 함수: buildSurvey\n */\n\nfunction buildSurvey() {\n  Logger.log(\"방과후 캠프 희망서를 만드는 중입니다...\");\n\n  // 1. 드라이브에 새 설문지 만들기\n  const form = FormApp.create(\"2026학년도 2학기 방과후 특기적성 캠프 희망서\");\n\n  // 2. 설문 안내문\n  form.setDescription(\n    \"학부모님 안녕하십니까. 11월에 운영할 방과후 특기적성 캠프의 수요를 조사하고자 합니다.\\n\" +\n    \"희망하는 강좌를 선택해 주시기 바랍니다.\\n\\n\" +\n    \"* 신청 기한: 2026년 10월 30일(금)까지\"\n  );\n  form.setProgressBar(true);\n\n  // 3. 학생 성명 (필수, 단답형)\n  form.addTextItem()\n    .setTitle(\"학생 성명\")\n    .setHelpText(\"출석부와 대조할 수 있도록 정확한 이름을 적어 주세요.\")\n    .setRequired(true);\n\n  // 4. 소속 학급 (필수, 단답형)\n  form.addTextItem()\n    .setTitle(\"학년 · 반 · 번호\")\n    .setHelpText(\"예: 6학년 1반 15번\")\n    .setRequired(true);\n\n  // 5. 수강 희망 강좌 (필수, 객관식)\n  form.addMultipleChoiceItem()\n    .setTitle(\"수강 희망 강좌\")\n    .setHelpText(\"가장 참여하고 싶은 강좌 한 가지를 골라 주세요.\")\n    .setChoiceValues([\n      \"드론 비행 조종 코스\",\n      \"파이썬 로봇 코딩 코스\",\n      \"태블릿 디지털 드로잉 코스\"\n    ])\n    .setRequired(true);\n\n  // 6. 건의 사항 (선택, 장문형)\n  form.addParagraphTextItem()\n    .setTitle(\"담임 선생님께 전할 말씀 · 요청 사항\")\n    .setHelpText(\"귀가 방법, 준비물 문의 등 자유롭게 적어 주세요.\");\n\n  // 7. 교사용 / 배포용 주소를 로그에 출력\n  Logger.log(\"=========================================\");\n  Logger.log(\"🎈 설문지 생성 완료\");\n  Logger.log(\"▶ [교사용] 편집·응답 확인 주소: \" + form.getEditUrl());\n  Logger.log(\"▶ [배포용] 응답 제출 주소: \" + form.getPublishedUrl());\n  Logger.log(\"=========================================\");\n}\n","calendar.gs":"/**\n * [독립형] 학사 일정 구글 캘린더 일괄 등록\n * 실행 함수: syncDefaultCalendar\n *\n * ※ 프로젝트 설정(⚙)의 시간대가 '(GMT+09:00) 서울'인지 먼저 확인하세요.\n */\n\n// 1. 등록할 일정 목록 (날짜는 '연-월-일' 형식)\nconst CAL_EVENTS_DB = [\n  { date: \"2026-10-22\", title: \"🏫 2학기 학부모 공개수업\", location: \"각 학급 교실\" },\n  { date: \"2026-10-30\", title: \"📝 방과후 캠프 희망서 마감\", location: \"교무실\" },\n  { date: \"2026-11-12\", title: \"🔬 과학탐구 발표대회\", location: \"강당\" }\n];\n\n// 2. 실행 함수: 위 일정을 내 기본 캘린더에 종일 일정으로 등록\nfunction syncDefaultCalendar() {\n  Logger.log(\"📅 캘린더 일정 등록을 시작합니다...\");\n\n  const calendar = CalendarApp.getDefaultCalendar();\n\n  CAL_EVENTS_DB.forEach(event => {\n    const eventDate = toLocalDate_(event.date);\n\n    // 같은 날 같은 제목의 일정이 이미 있으면 건너뛰기 (중복 등록 방지)\n    const exists = calendar.getEventsForDay(eventDate)\n      .some(ev => ev.getTitle() === event.title);\n    if (exists) {\n      Logger.log(\"⏭ 이미 있음: \" + event.title);\n      return;\n    }\n\n    calendar.createAllDayEvent(event.title, eventDate, {\n      location: event.location,\n      description: \"Apps Script로 자동 등록된 일정입니다.\"\n    });\n    Logger.log(\"✅ 등록: \" + event.title + \" (\" + event.date + \")\");\n\n    Utilities.sleep(150); // 연속 등록 시 잠깐 쉬기\n  });\n\n  Logger.log(\"🎉 완료! 캘린더를 확인해 보세요.\");\n}\n\n// '2026-10-22' 문자열을 스크립트 시간대 기준 날짜로 변환\n// (new Date(\"2026-10-22\")는 UTC 기준이라 시간대에 따라 하루가 밀릴 수 있음)\nfunction toLocalDate_(text) {\n  const [y, m, d] = text.split(\"-\").map(Number);\n  return new Date(y, m - 1, d);\n}\n","gifted.gs":"/**\n * 2026 영재 이수자 명단 → 학교생활기록부 입력 문구 자동 생성\n *\n * 시트 구조 (1행은 머리글)\n *   A열: 이름 | B열: 학년 | C열: 구분 | D열: 영역 | E열: 이수 시간 | F열: 생성 문구\n *\n * 사용법\n *   1. [확장 프로그램] → [Apps Script]에 이 코드를 붙여넣고 저장\n *   2. 시트를 새로고침하면 상단에 [생기부 문구] 메뉴가 생김\n *   3. [생기부 문구] → [문구 생성] 클릭 (처음 한 번은 권한 승인 필요)\n */\n\n// ===== 설정 =====\nconst SHEET_NAME  = '';    // 대상 시트 탭 이름 (비워 두면 현재 보고 있는 시트)\nconst TOTAL_HOURS = 120;   // 과정 총 시간\nconst HEADER_ROWS = 1;     // 머리글 행 수\n// ================\n\n// 시트를 열 때 자동 실행되는 단순 트리거 → 상단 메뉴 만들기\nfunction onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu('생기부 문구')\n    .addItem('문구 생성', 'generateSentences')\n    .addItem('문구 지우기', 'clearSentences')\n    .addToUi();\n}\n\nfunction getTargetSheet_() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  return (SHEET_NAME && ss.getSheetByName(SHEET_NAME)) || ss.getActiveSheet();\n}\n\n// 한 사람의 문구 만들기\nfunction makeSentence_(grade, type, area, hours) {\n  return `${type}에서 ${grade}학년 과정 ${area} 영역(${TOTAL_HOURS}시간) ${hours}시간을 이수함.`;\n}\n\nfunction generateSentences() {\n  const sheet = getTargetSheet_();\n  const lastRow = sheet.getLastRow();\n  if (lastRow \u003c= HEADER_ROWS) {\n    SpreadsheetApp.getUi().alert('데이터가 없습니다.');\n    return;\n  }\n\n  const numRows = lastRow - HEADER_ROWS;\n  const data = sheet.getRange(HEADER_ROWS + 1, 1, numRows, 5).getValues(); // A~E열을 한 번에 읽기\n\n  const isBlank = v => v === '' || v === null || v === undefined;\n  const output = data.map(([name, grade, type, area, hours]) => {\n    if ([name, grade, type, area, hours].some(isBlank)) return ['']; // 빈 행은 건너뛰기\n    return [makeSentence_(\n      String(grade).trim().replace(/학년$/, ''), // '2'와 '2학년' 모두 허용\n      String(type).trim(),\n      String(area).trim(),\n      Number(hours)\n    )];\n  });\n\n  sheet.getRange(HEADER_ROWS + 1, 6, numRows, 1).setValues(output); // F열에 한 번에 쓰기\n  SpreadsheetApp.getUi().alert(`${output.filter(r => r[0]).length}명의 문구를 생성했습니다.`);\n}\n\nfunction clearSentences() {\n  const sheet = getTargetSheet_();\n  const lastRow = sheet.getLastRow();\n  if (lastRow > HEADER_ROWS) {\n    sheet.getRange(HEADER_ROWS + 1, 6, lastRow - HEADER_ROWS, 1).clearContent();\n  }\n}\n","certificate.gs":"/**\n * 연수 수료자 명단 → 축하 문구 일괄 생성\n *\n * 시트 구조: A열 이름 | B열 생성 문구 (1행은 머리글)\n * 시트를 새로고침하면 상단에 [연수 도구] 메뉴가 생깁니다.\n */\n\n// 시트를 열면 자동 실행 → [연수 도구] 메뉴 만들기\nfunction onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu(\"연수 도구\")\n    .addItem(\"문구 일괄 생성\", \"greetAll\")\n    .addItem(\"B열 지우기\", \"clearMessages\")\n    .addToUi();\n}\n\n// A열 이름을 읽어 B열에 축하 문구 쓰기\nfunction greetAll() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  const lastRow = sheet.getLastRow();                    // 데이터가 있는 마지막 행\n\n  for (let row = 2; row \u003c= lastRow; row++) {             // 2행부터 끝까지 반복\n    const name = sheet.getRange(row, 1).getValue();      // A열 읽기\n    if (name === \"\") continue;                           // 빈 칸은 건너뛰기\n    const message = name + \" 님, 연수 수료를 축하합니다!\";\n    sheet.getRange(row, 2).setValue(message);            // B열에 쓰기\n  }\n}\n\n// B열 문구 지우기 (머리글은 남김)\nfunction clearMessages() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  const lastRow = sheet.getLastRow();\n  if (lastRow \u003c 2) return;                               // 지울 데이터가 없으면 종료\n  sheet.getRange(2, 2, lastRow - 1, 1).clearContent();\n}\n","emotion_code.gs":"/**\n * 우리 반 감정일기 웹앱 — 서버 코드 (Code.gs)\n * 시트 구조: A열 이름 | B열 오늘의 기분 | C열 오늘의 일시 (1행 머리글)\n */\n\n// 웹앱 주소로 접속하면 index.html 화면을 보여줌\nfunction doGet() {\n  return HtmlService.createHtmlOutputFromFile('index')\n    .setTitle('오늘의 감정 일기')\n    .addMetaTag('viewport', 'width=device-width, initial-scale=1'); // 휴대폰 화면 대응\n}\n\n// 화면에서 [선생님께 보내기]를 누르면 실행되는 함수\nfunction saveEmotion(name, emotion) {\n  name = String(name || '').trim();\n  emotion = String(emotion || '').trim();\n  if (!name || !emotion) {\n    throw new Error('이름과 기분을 모두 적어 주세요.'); // 화면의 실패 처리로 전달됨\n  }\n\n  // 첫 번째 시트의 맨 아래에 한 줄 추가\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];\n  const now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss');\n  sheet.appendRow([safe_(name), safe_(emotion), now]);\n\n  return '참 잘했어요! 선생님에게 오늘의 기분이 잘 전달되었어요. 💖';\n}\n\n// '='로 시작하는 글자가 수식으로 바뀌지 않도록 앞에 ' 를 붙임\nfunction safe_(text) {\n  return /^[=+\\-@]/.test(text) ? \"'\" + text : text;\n}\n","emotion_index.html":"\u003c!DOCTYPE html>\n\u003chtml lang=\"ko\">\n\u003chead>\n  \u003cbase target=\"_top\">\n  \u003cmeta charset=\"UTF-8\">\n  \u003cstyle>\n    /* 아이들이 좋아하는 부드러운 색과 둥근 모양 */\n    body {\n      font-family: 'Malgun Gothic', sans-serif;\n      background-color: #f0f8ff; /* 연한 하늘색 */\n      text-align: center;\n      padding: 20px;\n      margin: 0;\n    }\n    .container {\n      background-color: white;\n      border-radius: 20px;\n      padding: 30px;\n      box-shadow: 0 8px 16px rgba(0,0,0,0.1);\n      max-width: 350px;\n      margin: 30px auto;\n    }\n    h1 { color: #ff69b4; font-size: 24px; }\n    label {\n      font-size: 16px;\n      font-weight: bold;\n      color: #333;\n      display: block;\n      margin: 25px 0 5px;\n      text-align: left;\n    }\n    input[type=\"text\"] {\n      width: 100%;\n      padding: 15px;\n      border: 3px solid #87ceeb;\n      border-radius: 12px;\n      font-size: 16px;\n      box-sizing: border-box;\n      outline: none;\n    }\n    input[type=\"text\"]:focus { border-color: #ffb6c1; }\n    button {\n      background-color: #ffd700; /* 개나리색 */\n      color: #555;\n      border: none;\n      padding: 15px 30px;\n      font-size: 18px;\n      font-weight: bold;\n      border-radius: 25px;\n      cursor: pointer;\n      margin-top: 30px;\n      width: 100%;\n      box-shadow: 0 4px 6px rgba(0,0,0,0.1);\n      transition: 0.2s;\n    }\n    button:hover { background-color: #ffc107; transform: scale(1.03); }\n    button:disabled { background-color: #ddd; transform: none; cursor: default; }\n    #message { margin-top: 20px; font-size: 16px; font-weight: bold; line-height: 1.5; }\n  \u003c/style>\n\u003c/head>\n\u003cbody>\n  \u003cdiv class=\"container\">\n    \u003ch1>🌈 오늘의 마음 날씨 ☁️\u003c/h1>\n    \u003cp style=\"color:#666; font-size:14px;\">오늘 하루 어떤 기분이었나요?\u003c/p>\n\n    \u003clabel for=\"studentName\">👤 내 이름\u003c/label>\n    \u003cinput type=\"text\" id=\"studentName\" placeholder=\"이름을 적어 주세요!\">\n\n    \u003clabel for=\"emotion\">💭 오늘의 기분\u003c/label>\n    \u003cinput type=\"text\" id=\"emotion\" placeholder=\"예: 신나요, 기뻐요, 조금 슬퍼요\">\n\n    \u003cbutton id=\"sendBtn\" onclick=\"submitData()\">선생님께 보내기 🚀\u003c/button>\n    \u003cdiv id=\"message\">\u003c/div>\n  \u003c/div>\n\n  \u003cscript>\n    // [선생님께 보내기]를 눌렀을 때 실행\n    function submitData() {\n      var name = document.getElementById(\"studentName\").value.trim();\n      var emotion = document.getElementById(\"emotion\").value.trim();\n      var msgDiv = document.getElementById(\"message\");\n      var btn = document.getElementById(\"sendBtn\");\n\n      // 빈칸 확인\n      if (name === \"\" || emotion === \"\") {\n        msgDiv.style.color = \"#ff4500\";\n        msgDiv.textContent = \"이름과 기분을 모두 적어 주세요! 👀\";\n        return;\n      }\n\n      msgDiv.style.color = \"#1e90ff\";\n      msgDiv.textContent = \"선생님에게 보내는 중이에요... 슝슝! 💨\";\n      btn.disabled = true; // 여러 번 누르지 못하게 잠시 막기\n\n      // Code.gs의 saveEmotion 함수 실행\n      google.script.run\n        .withSuccessHandler(function(response) {\n          msgDiv.style.color = \"#32cd32\";\n          msgDiv.textContent = response;\n          document.getElementById(\"studentName\").value = \"\";\n          document.getElementById(\"emotion\").value = \"\";\n          btn.disabled = false;\n        })\n        .withFailureHandler(function(error) {\n          msgDiv.style.color = \"red\";\n          msgDiv.textContent = \"앗, 문제가 생겼어요. 다시 시도해 주세요. 😢 (\" + error.message + \")\";\n          btn.disabled = false;\n        })\n        .saveEmotion(name, emotion);\n    }\n  \u003c/script>\n\u003c/body>\n\u003c/html>\n","feedback_code.gs":"/**\n * 연수 소감 나눔함 웹앱 — 서버 코드 (Code.gs)\n *\n * 시트 구조: A열 이름(소속) | B열 소감 또는 질문 | C열 제출 일시\n *\n * 사용 방법\n *   1) 스프레드시트 → 확장 프로그램 → Apps Script\n *   2) 이 코드를 Code.gs에 붙여넣기\n *   3) + → HTML로 'index' 파일을 만들어 화면 코드 붙여넣기\n *   4) 배포 → 새 배포 → 웹 앱\n *      - 다음 사용자 인증 정보로 실행: 나\n *      - 액세스 권한이 있는 사용자: 모든 사용자\n *   5) 발급된 URL(…/exec)을 QR코드로 만들어 참가자에게 공유\n */\n\n// 웹앱 주소로 접속하면 index.html 화면을 보여줌\nfunction doGet() {\n  return HtmlService.createHtmlOutputFromFile('index')\n    .setTitle('연수 소감 나눔함')\n    .addMetaTag('viewport', 'width=device-width, initial-scale=1');\n}\n\n// 화면에서 제출 버튼을 누르면 호출되는 함수\nfunction submitData(name, content) {\n  name = String(name || '').trim();\n  content = String(content || '').trim();\n  if (!name || !content) {\n    throw new Error('이름과 내용을 모두 입력해 주세요.');\n  }\n\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];\n\n  // A열: 이름, B열: 내용, C열: 제출 일시 — 맨 아래 행에 추가\n  sheet.appendRow([\n    safe_(name),\n    safe_(content),\n    Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss')\n  ]);\n\n  return '제출 완료';\n}\n\n// '='로 시작하는 글자가 수식으로 바뀌지 않도록 앞에 ' 를 붙임\nfunction safe_(text) {\n  return /^[=+\\-@]/.test(text) ? \"'\" + text : text;\n}\n","feedback_index.html":"\u003c!DOCTYPE html>\n\u003chtml lang=\"ko\">\n\u003chead>\n  \u003cbase target=\"_top\">\n  \u003cmeta charset=\"UTF-8\">\n  \u003ctitle>연수 소감 나눔함\u003c/title>\n  \u003cstyle>\n    * { box-sizing: border-box; margin: 0; padding: 0; }\n\n    body {\n      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;\n      background: linear-gradient(160deg, #eef3fb 0%, #f7f9fc 100%);\n      min-height: 100vh;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 24px 16px;\n    }\n\n    .card {\n      background: #ffffff;\n      width: 100%;\n      max-width: 460px;\n      border-radius: 16px;\n      box-shadow: 0 8px 28px rgba(30, 60, 110, 0.10);\n      padding: 36px 32px;\n    }\n\n    .badge {\n      display: inline-block;\n      background: #e8f0fe;\n      color: #1a56b8;\n      font-size: 12px;\n      font-weight: 600;\n      letter-spacing: 0.5px;\n      padding: 5px 12px;\n      border-radius: 999px;\n      margin-bottom: 14px;\n    }\n\n    h1 {\n      font-size: 22px;\n      color: #1f2d45;\n      margin-bottom: 6px;\n    }\n\n    .subtitle {\n      font-size: 14px;\n      color: #6b7a94;\n      line-height: 1.6;\n      margin-bottom: 28px;\n    }\n\n    label {\n      display: block;\n      font-size: 14px;\n      font-weight: 600;\n      color: #33415c;\n      margin-bottom: 8px;\n    }\n\n    input[type=\"text\"], textarea {\n      width: 100%;\n      border: 1.5px solid #d6dee9;\n      border-radius: 10px;\n      padding: 13px 14px;\n      font-size: 15px;\n      color: #1f2d45;\n      background: #fbfcfe;\n      transition: border-color 0.2s, box-shadow 0.2s;\n      font-family: inherit;\n    }\n\n    input[type=\"text\"]:focus, textarea:focus {\n      outline: none;\n      border-color: #3b6fd4;\n      box-shadow: 0 0 0 3px rgba(59, 111, 212, 0.12);\n      background: #ffffff;\n    }\n\n    textarea {\n      height: 130px;\n      resize: vertical;\n      line-height: 1.6;\n    }\n\n    .field { margin-bottom: 22px; }\n\n    .hint {\n      font-size: 12px;\n      color: #93a1b8;\n      margin-top: 6px;\n    }\n\n    button {\n      width: 100%;\n      background: #2f5fc4;\n      color: #ffffff;\n      border: none;\n      border-radius: 10px;\n      padding: 15px;\n      font-size: 16px;\n      font-weight: 700;\n      cursor: pointer;\n      transition: background 0.2s, transform 0.1s;\n    }\n\n    button:hover { background: #244fa8; }\n    button:active { transform: scale(0.99); }\n    button:disabled { background: #a9b8d4; cursor: default; }\n\n    #message {\n      margin-top: 18px;\n      text-align: center;\n      font-size: 14px;\n      font-weight: 600;\n      display: none;\n      padding: 12px;\n      border-radius: 10px;\n      line-height: 1.5;\n    }\n\n    #message.success {\n      display: block;\n      background: #e9f7ef;\n      color: #1e7a45;\n    }\n\n    #message.error {\n      display: block;\n      background: #fdeeee;\n      color: #c0392b;\n    }\n\n    .footer {\n      margin-top: 24px;\n      text-align: center;\n      font-size: 12px;\n      color: #aab6c9;\n    }\n  \u003c/style>\n\u003c/head>\n\u003cbody>\n  \u003cdiv class=\"card\">\n    \u003cspan class=\"badge\">AI·디지털지식나눔 원격연수\u003c/span>\n    \u003ch1>연수 소감 나눔함\u003c/h1>\n    \u003cp class=\"subtitle\">\n      오늘 연수에서 얻은 배움 한 가지, 또는 강사에게 남기고 싶은\n      질문을 자유롭게 적어 주세요.\n    \u003c/p>\n\n    \u003cdiv class=\"field\">\n      \u003clabel for=\"name\">이름 (소속)\u003c/label>\n      \u003cinput type=\"text\" id=\"name\" placeholder=\"예: 홍길동 (○○초등학교)\">\n    \u003c/div>\n\n    \u003cdiv class=\"field\">\n      \u003clabel for=\"content\">한줄 소감 또는 질문\u003c/label>\n      \u003ctextarea id=\"content\" placeholder=\"예: 우리 반 감정일기를 내일 바로 써 보고 싶어요.\">\u003c/textarea>\n      \u003cp class=\"hint\">제출한 내용은 연수 운영과 향후 기획에만 활용됩니다.\u003c/p>\n    \u003c/div>\n\n    \u003cbutton id=\"submitBtn\" onclick=\"handleSubmit()\">제출하기\u003c/button>\n    \u003cdiv id=\"message\">\u003c/div>\n\n    \u003cp class=\"footer\">2026 AI·디지털지식나눔교사 연수\u003c/p>\n  \u003c/div>\n\n  \u003cscript>\n    function handleSubmit() {\n      const name = document.getElementById('name').value.trim();\n      const content = document.getElementById('content').value.trim();\n      const btn = document.getElementById('submitBtn');\n      const msg = document.getElementById('message');\n\n      msg.className = '';\n      msg.textContent = '';\n\n      if (!name || !content) {\n        msg.className = 'error';\n        msg.textContent = '이름과 내용을 모두 입력해 주세요.';\n        return;\n      }\n\n      // 중복 클릭 방지\n      btn.disabled = true;\n      btn.textContent = '제출 중...';\n\n      google.script.run\n        .withSuccessHandler(function () {\n          msg.className = 'success';\n          msg.textContent = '소중한 의견이 제출되었습니다. 감사합니다!';\n          document.getElementById('name').value = '';\n          document.getElementById('content').value = '';\n          btn.disabled = false;\n          btn.textContent = '제출하기';\n        })\n        .withFailureHandler(function (error) {\n          msg.className = 'error';\n          msg.textContent = '제출에 실패했습니다: ' + error.message;\n          btn.disabled = false;\n          btn.textContent = '제출하기';\n        })\n        .submitData(name, content);\n    }\n  \u003c/script>\n\u003c/body>\n\u003c/html>","register_code.gs":"/**\n * 연수 자동 등록부(출석 서명) 웹앱 — 서버 코드 (Code.gs)\n *\n * 시트 구조: A열 성함 | B열 일시 | C열 서명(셀 안 이미지)  (1행 머리글)\n *\n * 배포: 배포 → 새 배포 → 웹 앱\n *   - 다음 사용자 인증 정보로 실행: 나\n *   - 액세스 권한이 있는 사용자: 모든 사용자\n */\n\nconst TRAINING_NAME = '2026 AI·디지털지식나눔 연수';   // 화면 상단에 보일 연수 이름\n\n// 웹앱 접속 시 index.html을 템플릿으로 열어 연수 이름을 끼워 넣음\nfunction doGet() {\n  const page = HtmlService.createTemplateFromFile('index');\n  page.trainingName = TRAINING_NAME;\n  return page.evaluate()\n    .setTitle(TRAINING_NAME + ' 출석 서명')\n    .addMetaTag('viewport', 'width=device-width, initial-scale=1');\n}\n\n// 화면에서 [등록하기]를 누르면 실행: 이름 + 서명 이미지를 시트에 기록\nfunction submitSignature(name, signatureDataUrl) {\n  name = String(name || '').trim();\n  if (!name) throw new Error('성함을 입력해 주세요.');\n  if (!/^data:image\\/png;base64,/.test(signatureDataUrl || '')) {\n    throw new Error('서명을 해 주세요.');\n  }\n\n  // 여러 명이 동시에 제출해도 행이 섞이지 않도록 잠금\n  const lock = LockService.getScriptLock();\n  lock.waitLock(10000);\n  try {\n    const sheet = getSheet_();\n    const row = sheet.getLastRow() + 1;\n    const now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss');\n\n    sheet.getRange(row, 1, 1, 2).setValues([[safe_(name), now]]);\n\n    // 서명 PNG를 셀 안 이미지로 넣기\n    const image = SpreadsheetApp.newCellImage()\n      .setSourceUrl(signatureDataUrl)\n      .setAltTextTitle(name + ' 서명')\n      .build();\n    sheet.getRange(row, 3).setValue(image);\n    sheet.setRowHeight(row, 70);\n  } finally {\n    lock.releaseLock();\n  }\n\n  return name + ' 선생님, 등록이 완료되었습니다.';\n}\n\n// 첫 번째 시트를 사용하고, 비어 있으면 머리글을 만들어 줌\nfunction getSheet_() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];\n  if (sheet.getLastRow() === 0) {\n    sheet.appendRow(['성함', '일시', '서명']);\n    sheet.getRange(1, 1, 1, 3).setFontWeight('bold').setHorizontalAlignment('center');\n    sheet.setColumnWidth(3, 200);\n    sheet.setFrozenRows(1);\n  }\n  return sheet;\n}\n\n// '='로 시작하는 글자가 수식으로 바뀌지 않도록 앞에 ' 를 붙임\nfunction safe_(text) {\n  return /^[=+\\-@]/.test(text) ? \"'\" + text : text;\n}\n","register_index.html":"\u003c!DOCTYPE html>\n\u003chtml lang=\"ko\">\n\u003chead>\n  \u003cbase target=\"_top\">\n  \u003cmeta charset=\"UTF-8\">\n  \u003cstyle>\n    * { box-sizing: border-box; }\n    body {\n      margin: 0; min-height: 100vh;\n      font-family: 'Malgun Gothic', sans-serif;\n      background: #eef7f6;\n      display: flex; align-items: center; justify-content: center; padding: 16px;\n    }\n    .card { width: 100%; max-width: 420px; background: #fff; border-radius: 18px; overflow: hidden;\n            box-shadow: 0 10px 30px rgba(0,0,0,.08); }\n    .head { background: #0b8f84; color: #fff; text-align: center; padding: 22px 16px; }\n    .head h1 { margin: 0; font-size: 20px; }\n    .head p { margin: 6px 0 0; font-size: 13px; opacity: .85; }\n    .body { padding: 26px 22px; text-align: center; }\n    .step { display: none; }\n    .step.active { display: block; }\n    h2 { font-size: 17px; margin: 0 0 6px; color: #222; }\n    .hint { font-size: 13px; color: #777; margin: 0 0 18px; }\n    input[type=\"text\"] { width: 100%; padding: 15px; font-size: 18px; text-align: center;\n            border: 2px solid #cfe9e6; border-radius: 12px; outline: none; }\n    input[type=\"text\"]:focus { border-color: #0b8f84; }\n    canvas { width: 100%; height: 200px; border: 2px dashed #b9d8d4; border-radius: 12px;\n             background: #fff; touch-action: none; display: block; }\n    .row { display: flex; gap: 10px; margin-top: 16px; }\n    button { flex: 1; padding: 15px; font-size: 16px; font-weight: bold; border: none;\n             border-radius: 12px; cursor: pointer; }\n    .primary { background: #0b8f84; color: #fff; }\n    .primary:disabled { background: #9cc9c4; cursor: default; }\n    .ghost { background: #eef1f1; color: #444; flex: 0 0 30%; }\n    .full { width: 100%; margin-top: 16px; }\n    #msg { min-height: 22px; margin-top: 14px; font-size: 14px; font-weight: bold; color: #d93025; }\n    .done-icon { font-size: 54px; margin: 10px 0; }\n  \u003c/style>\n\u003c/head>\n\u003cbody>\n  \u003cdiv class=\"card\">\n    \u003cdiv class=\"head\">\n      \u003ch1>\u003c?= trainingName ?>\u003c/h1>\n      \u003cp>출석 서명부 · \u003cspan id=\"today\">\u003c/span>\u003c/p>\n    \u003c/div>\n\n    \u003cdiv class=\"body\">\n      \u003c!-- 1단계: 이름 입력 -->\n      \u003cdiv class=\"step active\" id=\"step1\">\n        \u003ch2>성함을 입력해 주세요\u003c/h2>\n        \u003cp class=\"hint\">출석 확인을 위해 본명을 입력해 주세요.\u003c/p>\n        \u003cinput type=\"text\" id=\"name\" placeholder=\"예: 홍길동\" autocomplete=\"off\">\n        \u003cbutton class=\"primary full\" onclick=\"goStep2()\">다음 ›\u003c/button>\n      \u003c/div>\n\n      \u003c!-- 2단계: 서명 -->\n      \u003cdiv class=\"step\" id=\"step2\">\n        \u003ch2>\u003cspan id=\"who\">\u003c/span> 선생님,\u003c/h2>\n        \u003cp class=\"hint\">아래 빈칸에 서명해 주세요. \u003ca href=\"#\" onclick=\"clearPad(); return false;\">다시 쓰기\u003c/a>\u003c/p>\n        \u003ccanvas id=\"pad\">\u003c/canvas>\n        \u003cdiv class=\"row\">\n          \u003cbutton class=\"ghost\" onclick=\"showStep('step1')\">이전\u003c/button>\n          \u003cbutton class=\"primary\" id=\"submitBtn\" onclick=\"submitForm()\">등록하기\u003c/button>\n        \u003c/div>\n      \u003c/div>\n\n      \u003c!-- 3단계: 완료 -->\n      \u003cdiv class=\"step\" id=\"step3\">\n        \u003cdiv class=\"done-icon\">✅\u003c/div>\n        \u003ch2 id=\"doneText\">서명이 완료되었습니다\u003c/h2>\n        \u003cp class=\"hint\">3초 뒤 처음 화면으로 돌아갑니다.\u003c/p>\n      \u003c/div>\n\n      \u003cdiv id=\"msg\">\u003c/div>\n    \u003c/div>\n  \u003c/div>\n\n  \u003cscript>\n    var pad = document.getElementById('pad');\n    var ctx = pad.getContext('2d');\n    var drawing = false, signed = false;\n\n    document.getElementById('today').textContent = new Date().toLocaleDateString('ko-KR');\n\n    function showStep(id) {\n      document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });\n      document.getElementById(id).classList.add('active');\n      document.getElementById('msg').textContent = '';\n    }\n\n    function goStep2() {\n      var name = document.getElementById('name').value.trim();\n      if (!name) { document.getElementById('msg').textContent = '성함을 입력해 주세요.'; return; }\n      document.getElementById('who').textContent = name;\n      showStep('step2');\n      setupPad(); // 화면에 보인 뒤에 캔버스 크기를 맞춰야 선이 정확함\n    }\n\n    // 캔버스를 화면 크기에 맞추고 흰 바탕으로 초기화\n    function setupPad() {\n      var ratio = window.devicePixelRatio || 1;\n      pad.width = pad.clientWidth * ratio;\n      pad.height = pad.clientHeight * ratio;\n      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);\n      clearPad();\n    }\n\n    function clearPad() {\n      ctx.fillStyle = '#fff';\n      ctx.fillRect(0, 0, pad.width, pad.height);\n      ctx.strokeStyle = '#000';\n      ctx.lineWidth = 3;\n      ctx.lineCap = 'round';\n      ctx.lineJoin = 'round';\n      signed = false;\n    }\n\n    function point(e) {\n      var r = pad.getBoundingClientRect();\n      return { x: e.clientX - r.left, y: e.clientY - r.top };\n    }\n\n    // 마우스·손가락·펜 모두 pointer 이벤트로 처리\n    pad.addEventListener('pointerdown', function (e) {\n      drawing = true;\n      pad.setPointerCapture(e.pointerId);\n      var p = point(e);\n      ctx.beginPath();\n      ctx.moveTo(p.x, p.y);\n    });\n    pad.addEventListener('pointermove', function (e) {\n      if (!drawing) return;\n      var p = point(e);\n      ctx.lineTo(p.x, p.y);\n      ctx.stroke();\n      signed = true;\n    });\n    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (type) {\n      pad.addEventListener(type, function () { drawing = false; });\n    });\n\n    // 시트에 넣기 좋게 가로 400px로 줄인 PNG 만들기\n    function signatureImage() {\n      var out = document.createElement('canvas');\n      out.width = 400;\n      out.height = Math.round(400 * pad.height / pad.width);\n      out.getContext('2d').drawImage(pad, 0, 0, out.width, out.height);\n      return out.toDataURL('image/png');\n    }\n\n    function submitForm() {\n      var msg = document.getElementById('msg');\n      var btn = document.getElementById('submitBtn');\n      var name = document.getElementById('name').value.trim();\n      if (!signed) { msg.textContent = '서명을 해 주세요.'; return; }\n\n      btn.disabled = true;\n      btn.textContent = '등록 중...';\n      google.script.run\n        .withSuccessHandler(function (text) {\n          document.getElementById('doneText').textContent = text;\n          showStep('step3');\n          btn.disabled = false;\n          btn.textContent = '등록하기';\n          // 3초 뒤 다음 사람을 위해 처음으로\n          setTimeout(function () {\n            document.getElementById('name').value = '';\n            showStep('step1');\n          }, 3000);\n        })\n        .withFailureHandler(function (err) {\n          msg.textContent = '등록 실패: ' + err.message;\n          btn.disabled = false;\n          btn.textContent = '등록하기';\n        })\n        .submitSignature(name, signatureImage());\n    }\n  \u003c/script>\n\u003c/body>\n\u003c/html>\n","mail.gs":"/**\n * 구글폼 신청자에게 '신청 완료' 확인 메일 자동 발송\n *\n * 시트 구조 (폼 응답 시트)\n *   A열: 타임스탬프   B열: 신청자 이름   C열: 이메일 주소\n *\n * 작동 방식\n *   폼이 제출되는 순간 → 설치형 트리거가 onFormSubmit 실행 → 해당 응답자에게 메일 발송\n *\n * ⚠ 반드시 '설치형 트리거'로 등록해야 메일이 발송됩니다.\n *   (트리거 메뉴 → + 트리거 추가 → 함수: onFormSubmit,\n *    이벤트 소스: 스프레드시트에서, 이벤트 유형: 양식 제출 시)\n */\n\n// 폼 제출 시 자동 실행되는 함수\nfunction onFormSubmit(e) {\n  let name, email;\n\n  if (e && e.values) {\n    // ① 정상 경로: 폼 제출 → 트리거 실행\n    // e.values: 방금 제출된 응답 한 줄 (A열 = e.values[0], B열 = e.values[1], C열 = e.values[2])\n    name = e.values[1];   // B열: 이름\n    email = e.values[2];  // C열: 이메일\n  } else {\n    // ② 테스트 경로: 편집기에서 ▶로 직접 실행한 경우\n    //    (e가 없으므로 시트의 맨 마지막 응답을 대신 사용)\n    const sheet = SpreadsheetApp.getActiveSheet();\n    const lastRow = sheet.getLastRow();\n    if (lastRow \u003c 2) return;                          // 응답이 없으면 종료\n    name = sheet.getRange(lastRow, 2).getValue();     // B열\n    email = sheet.getRange(lastRow, 3).getValue();    // C열\n  }\n\n  email = String(email || '').trim();\n  if (!email.includes(\"@\")) return;                   // 이메일이 없으면 발송하지 않음\n\n  const subject = \"AI 활용 연수 참가 신청 완료 안내\";\n  const body = name + \"님 AI 활용 연수 참가 신청이 완료되었습니다. 감사합니다.\";\n\n  MailApp.sendEmail(email, subject, body);\n}\n\n/**\n * (보조) 이미 쌓여 있는 신청자 전원에게 한 번에 발송\n *  - 트리거를 설정하기 전에 접수된 응답을 처리할 때 ▶로 직접 실행\n *  - D열에 '발송완료'를 기록해 중복 발송을 막음\n */\nfunction sendToExisting() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  const lastRow = sheet.getLastRow();\n\n  for (let row = 2; row \u003c= lastRow; row++) {\n    const name = sheet.getRange(row, 2).getValue();     // B열\n    const email = String(sheet.getRange(row, 3).getValue()).trim(); // C열\n    const done = sheet.getRange(row, 4).getValue();     // D열: 발송 여부\n\n    if (!email.includes(\"@\") || done === \"발송완료\") continue;  // 건너뛰기\n\n    MailApp.sendEmail(\n      email,\n      \"AI 활용 연수 참가 신청 완료 안내\",\n      name + \"님 AI 활용 연수 참가 신청이 완료되었습니다. 감사합니다.\"\n    );\n    sheet.getRange(row, 4).setValue(\"발송완료\");        // 중복 방지 표시\n  }\n}\n","grades.gs":"/**\n * [심화] 성적 관리 메뉴 — 반별 시트 생성 · 점수 분류 · 색상 표시\n * 시트를 새로고침하면 상단에 [📊 성적 관리] 메뉴가 생깁니다.\n * 반 시트 구조: A열 학번 | B열 이름 | C열 점수 (1행 머리글, 시트 이름은 '○반')\n */\n\nconst CATEGORIES = [\n  { label: '90점 미만', max: 90, color: '#ff9900' },\n  { label: '80점 미만', max: 80, color: '#e06666' },\n  { label: '70점 미만', max: 70, color: '#cc0000' }\n];\n\n// ✅ 단순 트리거: 시트가 열릴 때 메뉴 만들기\nfunction onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu('📊 성적 관리')\n    .addItem('① 연습용 반별 시트 만들기', 'createClassSheets')\n    .addSeparator()\n    .addItem('② 점수 분류 (90 / 80 / 70점 미만)', 'classifyScores')\n    .addItem('③ 점수별 색상 표시', 'applyConditionalFormat')\n    .addToUi();\n}\n\n// ① 1~7반, 반마다 20명의 가상 점수표 만들기 (다시 실행하면 새로 만듦)\nfunction createClassSheets() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const totalClasses = 7;\n  const studentsPerClass = 20;\n\n  for (let c = 1; c \u003c= totalClasses; c++) {\n    const sheet = resetSheet_(ss, `${c}반`);      // 이미 있으면 내용을 비우고 다시 사용\n    sheet.getRange(1, 1, 1, 3).setValues([['학번', '이름', '점수']])\n      .setBackground('#4a86e8').setFontColor('#ffffff').setFontWeight('bold');\n\n    const rows = [];\n    for (let s = 1; s \u003c= studentsPerClass; s++) {\n      const studentId = `${c}${String(s).padStart(2, '0')}`;\n      const score = Math.floor(Math.random() * 41) + 60;   // 60~100점\n      rows.push([studentId, getRandomName_(), score]);\n    }\n    sheet.getRange(2, 1, rows.length, 3).setValues(rows);\n    sheet.getRange(1, 1, studentsPerClass + 1, 3).setHorizontalAlignment('center');\n    sheet.setFrozenRows(1);\n  }\n\n  // 처음부터 있던 빈 시트(시트1)는 비어 있을 때만 삭제\n  const blank = ss.getSheetByName('시트1') || ss.getSheetByName('Sheet1');\n  if (blank && blank.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(blank);\n\n  SpreadsheetApp.getUi().alert('반별 시트 생성 완료!');\n}\n\n// ② 모든 '○반' 시트를 돌며 기준 점수 미만 학생을 분류 시트로 모으기\nfunction classifyScores() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const classSheets = ss.getSheets().filter(sh => sh.getName().endsWith('반'));\n\n  for (const cat of CATEGORIES) {\n    const resultSheet = resetSheet_(ss, cat.label);\n    resultSheet.getRange(1, 1, 1, 4).setValues([['반', '학번', '이름', '점수']])\n      .setBackground(cat.color).setFontColor('#ffffff').setFontWeight('bold');\n\n    const collected = [];\n    for (const sheet of classSheets) {\n      const lastRow = sheet.getLastRow();\n      if (lastRow \u003c 2) continue;\n      const data = sheet.getRange(2, 1, lastRow - 1, 3).getValues();\n      for (const [id, name, score] of data) {\n        // 빈 칸('')도 숫자 비교에서 0처럼 취급되므로 숫자일 때만 분류\n        if (typeof score === 'number' && score \u003c cat.max) {\n          collected.push([sheet.getName(), id, name, score]);\n        }\n      }\n    }\n\n    if (collected.length > 0) {\n      resultSheet.getRange(2, 1, collected.length, 4).setValues(collected);\n    } else {\n      resultSheet.getRange(2, 1).setValue('해당 학생 없음');\n    }\n    resultSheet.getRange(1, 1, Math.max(collected.length, 1) + 1, 4).setHorizontalAlignment('center');\n  }\n\n  SpreadsheetApp.getUi().alert('분류 완료! 새로 생긴 시트를 확인하세요.');\n}\n\n// ③ 점수(C열)에 따라 행 전체 색이 자동으로 바뀌는 조건부 서식\nfunction applyConditionalFormat() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n\n  for (const sheet of ss.getSheets()) {\n    if (!sheet.getName().endsWith('반')) continue;\n    const lastRow = sheet.getLastRow();\n    if (lastRow \u003c 2) continue;\n\n    const range = sheet.getRange(`A2:C${lastRow}`);\n    const rule = (formula, color) => SpreadsheetApp.newConditionalFormatRule()\n      .whenFormulaSatisfied(formula).setBackground(color).setRanges([range]).build();\n\n    // 위에서부터 먼저 맞는 규칙이 적용되므로 순서가 중요\n    sheet.setConditionalFormatRules([\n      rule('=$C2>=90', '#b6d7a8'),   // 90점 이상 → 초록\n      rule('=$C2>=80', '#fff2cc'),   // 80점 이상 → 노랑\n      rule('=$C2>=70', '#fce5cd'),   // 70점 이상 → 주황\n      rule('=AND($C2\u003c>\"\",$C2\u003c70)', '#f4cccc')  // 70점 미만 → 빨강\n    ]);\n  }\n\n  SpreadsheetApp.getUi().alert('색상 표시 완료! 점수를 바꾸면 색도 함께 바뀝니다.');\n}\n\n// 이름이 같은 시트가 있으면 비우고, 없으면 새로 만들기\nfunction resetSheet_(ss, name) {\n  const sheet = ss.getSheetByName(name) || ss.insertSheet(name);\n  sheet.clear();\n  sheet.clearConditionalFormatRules();\n  return sheet;\n}\n\nfunction getRandomName_() {\n  const lastNames = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임'];\n  const firstNames = ['민준', '서연', '지호', '수아', '도윤', '하은', '시우', '지아', '준서', '채원', '예준', '수빈'];\n  const pick = arr => arr[Math.floor(Math.random() * arr.length)];\n  return pick(lastNames) + pick(firstNames);\n}\n","share_code.gs":"/**\n * '함께 공유' 게시판 백엔드 — 구글 시트 + Apps Script 웹앱\n *\n * 설치 (강사 1회)\n *   1) 새 구글 시트 → 확장 프로그램 → Apps Script → 이 코드 붙여넣고 저장\n *   2) 배포 → 새 배포 → 유형: 웹 앱\n *      - 다음 사용자 인증 정보로 실행: 나\n *      - 액세스 권한이 있는 사용자: 모든 사용자\n *   3) 발급된 웹 앱 URL(…/exec)을 실습 웹앱 index.html의 SHARE_API_URL에 붙여넣기\n *\n * 시트 '공유' 구조: A 등록일시 | B 이름(소속) | C 앱 이름 | D 링크 | E 소개 | F 도구 | G 숨김\n *   → 부적절한 글은 G열에 X를 입력하면 게시판에서 숨겨집니다.\n */\n\nconst SHEET_NAME = '공유';\nconst TOOLS = ['Apps Script', 'AppSheet', 'Gemini Canvas', 'AI Studio', '기타'];\nconst MAX_ITEMS = 300;\n\n// 목록 조회: GET …/exec\nfunction doGet() {\n  const sheet = getSheet_();\n  const lastRow = sheet.getLastRow();\n  if (lastRow \u003c 2) return json_({ ok: true, items: [] });\n\n  const items = sheet.getRange(2, 1, lastRow - 1, 7).getValues()\n    .filter(r => String(r[6]).toUpperCase() !== 'X')          // 숨김 처리된 글 제외\n    .map(r => ({\n      createdAt: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),\n      name: String(r[1]), title: String(r[2]), url: String(r[3]),\n      description: String(r[4]), tool: String(r[5])\n    }))\n    .reverse()                                                // 최신 글이 위로\n    .slice(0, MAX_ITEMS);\n\n  return json_({ ok: true, items: items });\n}\n\n// 새 글 등록: POST …/exec (본문은 JSON 문자열)\nfunction doPost(e) {\n  try {\n    const data = JSON.parse((e && e.postData && e.postData.contents) || '{}');\n    const name = clean_(data.name, 40);\n    const title = clean_(data.title, 60);\n    const url = clean_(data.url, 500);\n    const description = clean_(data.description, 300);\n    const tool = TOOLS.includes(data.tool) ? data.tool : '기타';\n\n    if (!name || !title || !url) throw new Error('이름, 앱 이름, 링크는 꼭 입력해 주세요.');\n    if (!/^https:\\/\\/\\S+$/.test(url)) throw new Error('링크는 https:// 로 시작해야 합니다.');\n\n    const lock = LockService.getScriptLock();\n    lock.waitLock(10000);\n    try {\n      getSheet_().appendRow([new Date(), safe_(name), safe_(title), url, safe_(description), tool, '']);\n    } finally {\n      lock.releaseLock();\n    }\n    return json_({ ok: true });\n  } catch (err) {\n    return json_({ ok: false, error: err.message });\n  }\n}\n\nfunction getSheet_() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  let sheet = ss.getSheetByName(SHEET_NAME);\n  if (!sheet) {\n    sheet = ss.insertSheet(SHEET_NAME);\n    sheet.appendRow(['등록일시', '이름(소속)', '앱 이름', '링크', '소개', '도구', '숨김']);\n    sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#e8f0fe');\n    sheet.setFrozenRows(1);\n  }\n  return sheet;\n}\n\n// 앞뒤 공백 제거 + 길이 제한\nfunction clean_(value, maxLength) {\n  return String(value || '').trim().slice(0, maxLength);\n}\n\n// '='로 시작하는 글자가 수식으로 바뀌지 않도록 앞에 ' 를 붙임\nfunction safe_(text) {\n  return /^[=+\\-@]/.test(text) ? \"'\" + text : text;\n}\n\nfunction json_(obj) {\n  return ContentService.createTextOutput(JSON.stringify(obj))\n    .setMimeType(ContentService.MimeType.JSON);\n}\n"};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  const D = window.APP_DATA;
+  const CODES = window.CODE_FILES;
+  const $ = (sel, root) => (root || document).querySelector(sel);
+
+  /* ── helpers ── */
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
+  const ext = url => `href="${esc(url)}" target="_blank" rel="noopener noreferrer"`;
+
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  async function copyText(text, label) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    toast((label || '내용') + '을(를) 복사했습니다');
+  }
+
+  const store = {
+    get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch (e) { return fallback; } },
+    set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* 저장 불가 환경 */ } }
+  };
+  let doneSet = new Set(store.get('gas-lab-done', []));
+  const saveDone = () => store.set('gas-lab-done', [...doneSet]);
+
+  const levelBadge = lv => ({ '쉬움': 'b-green', '보통': 'b-blue', '도전': 'b-red' }[lv] || '');
+
+  /* ── HOME ── */
+  function renderHome() {
+    const c = D.course;
+    const session = s => `
+      <div class="card session">
+        <div class="session-top"><span class="badge b-blue">${esc(s.no)}</span><span class="muted" style="font-size:14px">${esc(s.time)}</span></div>
+        <h3>${esc(s.title)}</h3>
+        <ol>${s.items.map(it => `<li><a href="#${esc(it.go)}">${fmt(it.text)}</a></li>`).join('')}</ol>
+      </div>`;
+
+    $('#view-home').innerHTML = `
+      <div class="card hero">
+        <div class="kicker">2026 AI·디지털지식나눔교사 · 원격 연수</div>
+        <h1>구글 앱스 스크립트로<br>학교 업무 자동화하기</h1>
+        <p class="lead">반복되는 시트 정리, 문구 작성, 메일 발송, 출석 서명을 Apps Script로 자동화합니다. 프롬프트로 코드를 만들고(바이브 코딩), 붙여 넣고, 실행하는 흐름을 그대로 따라 해 보세요.</p>
+        <div class="meta">
+          <span class="badge">📅 ${esc(c.date)}</span>
+          <span class="badge">💻 크롬 브라우저 + 구글 계정</span>
+          <span class="badge">✍️ 비산초등학교 신동영</span>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="#standalone">독립형 실습 시작 →</a>
+          <a class="btn" href="#container">컨테이너형 실습</a>
+          <a class="btn" href="#share">작품 공유하기</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>오늘의 흐름</h2><p>항목을 누르면 해당 실습으로 이동합니다.</p></div>
+        <div class="grid g2">${D.sessions.map(session).join('')}</div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>바로 가기</h2></div>
+        <div class="grid g3 quick">${D.quickLinks.map(q => `<a class="card" ${ext(q.url)}><b>${esc(q.label)} ↗</b><small>${esc(q.note)}</small></a>`).join('')}</div>
+      </div>
+
+      <div class="section" id="concepts">
+        <div class="section-head"><h2>독립형과 컨테이너형</h2><p>코드가 ‘어디에 붙어 있느냐’의 차이입니다.</p></div>
+        <div class="grid g2">
+          <div class="card concept-card">
+            <span class="badge b-blue">독립형 Standalone</span>
+            <h3>드라이브에 따로 저장되는 프로젝트</h3>
+            <p>특정 시트에 묶이지 않고 혼자 실행됩니다. 새 문서 · 시트 · 설문 · 캘린더 일정을 <b>만들어 내는</b> 작업에 알맞습니다.</p>
+            <div class="steps-inline"><span>script.new</span><em>또는</em><span>드라이브 → 신규 → 더보기 → Google Apps Script</span></div>
+          </div>
+          <div class="card concept-card">
+            <span class="badge b-green">컨테이너형 Container-bound</span>
+            <h3>시트 · 문서 · 폼 안에 들어 있는 프로젝트</h3>
+            <p>연결된 파일의 데이터를 바로 읽고 씁니다. 상단 메뉴 추가(onOpen), 폼 제출 트리거, 시트 기반 웹앱에 알맞습니다.</p>
+            <div class="steps-inline"><span>시트 열기</span><em>→</em><span>확장 프로그램</span><em>→</em><span>Apps Script</span></div>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-top:14px">
+          <table>
+            <tr><th style="width:22%">구분</th><th>독립형</th><th>컨테이너형</th></tr>
+            <tr><td>저장 위치</td><td>드라이브에 별도 파일(Apps Script 아이콘)</td><td>시트 · 문서 · 폼 파일 안 (드라이브에 따로 보이지 않음)</td></tr>
+            <tr><td>데이터 접근</td><td><code>SpreadsheetApp.openById()</code> 등으로 파일을 지정</td><td><code>getActiveSpreadsheet()</code>로 연결된 파일을 바로 사용</td></tr>
+            <tr><td>상단 메뉴 · 알림창</td><td>사용 불가 (결과는 실행 로그로 확인)</td><td><code>getUi()</code>로 메뉴 · alert 사용 가능</td></tr>
+            <tr><td>대표 실습</td><td>상장 문서, 업무 시트, 방과후 설문, 캘린더 일정</td><td>생기부 문구, 감정일기 웹앱, 출석 서명, 메일 자동 발송</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section" id="auth">
+        <div class="section-head"><h2>처음 실행할 때: 권한 승인</h2><p>내가 만든 스크립트는 ‘Google에서 확인하지 않은 앱’으로 표시됩니다. 처음 한 번만 승인하면 됩니다.</p></div>
+        <div class="card pad">
+          <div class="steps-inline">
+            <span>① 실행(▶)</span><em>→</em><span>② 권한 검토</span><em>→</em><span>③ 계정 선택</span><em>→</em><span>④ 고급</span><em>→</em><span>⑤ (프로젝트 이름)(으)로 이동(안전하지 않음)</span><em>→</em><span>⑥ 모두 선택 → 계속</span>
+          </div>
+          <div class="callout warn" style="margin-top:14px"><span class="ci">⚠️</span><span>학교(Workspace) 계정은 관리자 정책으로 승인 · 외부 공유가 막혀 있을 수 있습니다. 실습이 막히면 개인 gmail 계정으로 진행하세요.</span></div>
+        </div>
+      </div>
+
+      <div class="section" id="triggers">
+        <div class="section-head"><h2>트리거: 코드가 ‘저절로’ 실행되는 조건</h2></div>
+        <div class="table-wrap">
+          <table>
+            <tr><th style="width:20%">종류</th><th style="width:30%">예</th><th>특징</th></tr>
+            <tr><td><span class="badge b-blue">단순 트리거</span></td><td><code>onOpen()</code>, <code>onEdit(e)</code></td><td>함수 이름만 맞추면 자동 실행. 메일 발송처럼 권한이 필요한 작업은 할 수 없습니다. (STEP 1 메뉴 만들기)</td></tr>
+            <tr><td><span class="badge b-red">설치형 트리거</span></td><td>양식 제출 시, 수정 시, 변경 시</td><td>왼쪽 ⏰ 트리거 메뉴에서 등록. 내 권한으로 실행되어 메일 발송이 가능합니다. (STEP 4 메일 자동 발송)</td></tr>
+            <tr><td><span class="badge b-green">시간 기반</span></td><td>매일 07:30, 매주 월요일</td><td>정해진 시각 · 간격마다 실행. 출결 마감 알림, 주간 보고서 등에 사용합니다.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section" id="deploy">
+        <div class="section-head"><h2>웹앱 배포: 실행 계정과 접근 범위</h2><p>배포 → 새 배포 → 유형 선택(⚙) → 웹 앱</p></div>
+        <div class="grid g2">
+          <div class="table-wrap">
+            <table>
+              <tr><th colspan="2">다음 사용자 인증 정보로 실행 (실행 계정)</th></tr>
+              <tr><td style="width:36%"><b>나</b></td><td>내 권한으로 내 시트에 기록. 학생 · 참가자가 로그인 없이 제출하는 웹앱은 대부분 이것을 고릅니다.</td></tr>
+              <tr><td><b>웹 앱에 액세스하는 사용자</b></td><td>접속한 사람의 권한으로 실행. 접속자에게 승인 창이 뜨고, 시트에 접근 권한이 있어야 합니다.</td></tr>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <tr><th colspan="2">액세스 권한이 있는 사용자 (접근 범위)</th></tr>
+              <tr><td style="width:36%"><b>나만</b></td><td>나만 열 수 있음 (테스트용)</td></tr>
+              <tr><td><b>같은 도메인 사용자</b></td><td>우리 학교 계정만 (Workspace 계정에만 보임)</td></tr>
+              <tr><td><b>Google 계정이 있는 모든 사용자</b></td><td>구글 로그인한 사람 누구나</td></tr>
+              <tr><td><b>모든 사용자</b></td><td>링크만 있으면 누구나 (로그인 불필요)</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="callout info" style="margin-top:14px"><span class="ci">💡</span><span>코드를 고친 뒤에는 <b>배포 → 배포 관리 → 연필(수정) → 버전: 새 버전 → 배포</b>를 눌러야 같은 주소에 반영됩니다. 다른 사람에게 줄 주소는 <code>…/exec</code>입니다. (<code>…/dev</code>는 편집자만 열 수 있는 테스트 주소)</span></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>코드를 잘 받는 프롬프트</h2><p>Gemini에 “시트 구조 + 원하는 동작 + 조건”을 함께 알려 주세요.</p></div>
+        <div class="grid g3">
+          <div class="card concept-card"><span class="badge">① 구조</span><h3>시트의 열을 알려 주기</h3><p>“A 이름 | B 학년 | C 구분 … 1행은 머리글”</p></div>
+          <div class="card concept-card"><span class="badge">② 동작</span><h3>입력 → 결과를 예시로</h3><p>“F열에 ‘영재학급에서 2학년 과정 …을 이수함.’을 넣어줘”</p></div>
+          <div class="card concept-card"><span class="badge">③ 조건</span><h3>실행 방법 · 예외 처리</h3><p>“상단 메뉴로 실행, 빈 행은 건너뛰기, 한글 주석, 배포 방법도 알려줘”</p></div>
+        </div>
+        <div class="callout ok" style="margin-top:14px"><span class="ci">🔁</span><span>오류가 나면 실행 로그의 <b>오류 메시지를 그대로 복사해 Gemini에 붙여 넣고</b> “이 오류를 고쳐줘”라고 하면 대부분 해결됩니다.</span></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>알아 두면 좋은 한도</h2><p>개인 gmail 기준 · (학교 Workspace 계정)</p></div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>개인 계정</th><th>Workspace 계정</th></tr>
+            <tr><td>메일 발송 (MailApp)</td><td>하루 100통</td><td>하루 1,500통</td></tr>
+            <tr><td>트리거 총 실행 시간</td><td>하루 90분</td><td>하루 6시간</td></tr>
+            <tr><td>함수 1회 실행 시간</td><td colspan="2">최대 6분 (넘으면 중단)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>자주 막히는 문제</h2></div>
+        <div class="card">
+          ${[
+            ['상단 메뉴가 안 보여요', '코드를 저장했는지, 함수 이름이 정확히 <code>onOpen</code>인지 확인한 뒤 시트를 새로고침(F5)하고 3~5초 기다려 보세요.'],
+            ['“Cannot call SpreadsheetApp.getUi() from this context” 오류', '독립형 스크립트나 웹앱에서는 메뉴 · 알림창을 쓸 수 없습니다. <code>Logger.log()</code>로 바꾸거나 컨테이너형(시트 → 확장 프로그램 → Apps Script)에서 실행하세요.'],
+            ['웹앱 코드를 고쳤는데 그대로예요', '배포 관리 → 연필 → 버전 ‘새 버전’ → 배포를 눌러야 반영됩니다.'],
+            ['다른 사람이 웹앱을 열면 권한 요청 · 오류가 떠요', '실행 계정을 ‘나’, 액세스를 ‘모든 사용자’로 배포했는지 확인하세요. 학교 계정은 관리자가 외부 공개를 막아 두었을 수 있습니다.'],
+            ['메일이 발송되지 않아요', '트리거 메뉴에서 <b>설치형 트리거(양식 제출 시)</b>를 등록했는지, 이름 · 이메일 열 위치가 코드(<code>e.values[1]</code>, <code>e.values[2]</code>)와 같은지 확인하세요. 실행 기록(왼쪽 ☰▶ 메뉴)에서 오류도 볼 수 있습니다.'],
+            ['함수 목록에 실행할 함수가 안 보여요', '코드를 저장해야 목록이 갱신됩니다. 이름 끝에 <code>_</code>가 붙은 함수(예: <code>safe_</code>)는 내부용이라 목록에 나오지 않습니다.']
+          ].map(([q, a]) => `<details class="faq"><summary>${esc(q)}</summary><div class="ans">${a}</div></details>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  /* ── LAB ROOMS ── */
+  const ROOMS = {
+    standalone: {
+      title: '독립형 실습실', desc: 'script.new에서 바로 시작하는 4가지 자동 생성 실습',
+      labs: D.standalone, groups: null
+    },
+    container: {
+      title: '컨테이너형 실습실', desc: '시트 · 폼에 연결된 스크립트 (패들렛 실습 순서)',
+      labs: D.container, groups: D.containerGroups
+    }
+  };
+
+  function renderRoom(roomKey, labId) {
+    const room = ROOMS[roomKey];
+    const labs = room.labs;
+    const lab = labs.find(l => l.id === labId) || labs[0];
+    const idx = labs.indexOf(lab);
+    const doneCount = labs.filter(l => doneSet.has(l.id)).length;
+
+    const sideItem = l => `<a class="side-item ${l.id === lab.id ? 'active' : ''} ${doneSet.has(l.id) ? 'done' : ''}" href="#${roomKey}/${l.id}"><span class="chk"></span><span>${esc(l.title)}</span></a>`;
+    let sideList = '';
+    if (room.groups) {
+      sideList = room.groups.map(g => {
+        const items = labs.filter(l => l.group === g.id);
+        return `<div class="side-group"><b>${esc(g.label)}</b><span>${esc(g.title)}</span></div>${items.map(sideItem).join('')}`;
+      }).join('');
+    } else {
+      sideList = labs.map(sideItem).join('');
+    }
+    const options = labs.map(l => {
+      const g = room.groups ? room.groups.find(x => x.id === l.group) : null;
+      return `<option value="${esc(l.id)}" ${l.id === lab.id ? 'selected' : ''}>${g ? esc(g.label) + ' · ' : ''}${esc(l.title)}${doneSet.has(l.id) ? ' ✓' : ''}</option>`;
+    }).join('');
+
+    const group = room.groups ? room.groups.find(g => g.id === lab.group) : null;
+    const linkIcon = { copy: '📄', done: '✅', app: '▶', gist: '{ }', form: '📝', sheet: '➕', ai: '✨' };
+    const links = (lab.links || []).map(k => `<a class="btn k-${esc(k.kind)}" ${ext(k.url)}><span class="ico">${linkIcon[k.kind] || '↗'}</span>${esc(k.label)}</a>`).join('');
+
+    let n = 0;
+    const block = (title, inner) => `<div class="lab-block"><h3><span class="num">${++n}</span>${title}</h3>${inner}</div>`;
+
+    let html = '';
+    if (lab.concepts) html += block('핵심 개념', `<ul class="clean concepts">${lab.concepts.map(c => `<li>${fmt(c)}</li>`).join('')}</ul>`);
+    if (lab.steps) html += block('따라 하기', `<ol class="follow">${lab.steps.map(s => `<li>${fmt(s)}</li>`).join('')}</ol>`);
+    if (lab.prompt) html += block('바이브 코딩 프롬프트', `
+      <div class="prompt-box">
+        <div class="box-bar"><span class="t">Gemini에 붙여 넣어 코드를 받아 보세요</span>
+          <a class="btn sm" ${ext('https://gemini.google.com/')}>Gemini 열기 ↗</a>
+          <button class="btn sm" data-copy-prompt>프롬프트 복사</button></div>
+        <pre>${esc(lab.prompt)}</pre>
+      </div>`);
+    if (lab.files && lab.files.length) html += block('완성 코드', `
+      ${lab.codeNote ? `<div class="callout info code-note"><span class="ci">ℹ️</span><span>${fmt(lab.codeNote)}</span></div>` : ''}
+      <div class="code-box">
+        <div class="code-tabs">
+          ${lab.files.map((f, i) => `<button class="tab ${i === 0 ? 'active' : ''}" data-file="${i}">${esc(f.name)}</button>`).join('')}
+          <span class="spacer"></span><span class="lines" id="code-lines"></span>
+          <button class="btn sm dark" data-copy-code>코드 복사</button>
+        </div>
+        <pre><code id="code-view"></code></pre>
+      </div>`);
+    if (lab.result) html += block('실행 결과', `<div class="callout ok"><span class="ci">🎯</span><span>${fmt(lab.result)}</span></div>`);
+    if (lab.tips && lab.tips.length) html += block('알아 두기', `<ul class="clean">${lab.tips.map(t => `<li>${fmt(t)}</li>`).join('')}</ul>`);
+
+    const prev = labs[idx - 1], next = labs[idx + 1];
+    const isDone = doneSet.has(lab.id);
+
+    $('#view-' + roomKey).innerHTML = `
+      <div class="lab-layout">
+        <aside class="card lab-side">
+          <div class="room"><b>${esc(room.title)}</b><small>${esc(room.desc)}</small></div>
+          <div class="progress" title="완료 ${doneCount}/${labs.length}"><i style="width:${Math.round(doneCount / labs.length * 100)}%"></i></div>
+          <select class="side-select" aria-label="실습 선택">${options}</select>
+          <div class="side-list">${sideList}</div>
+        </aside>
+        <article class="card lab">
+          <div class="lab-head">
+            <div class="row">
+              <div>
+                <div class="badges">
+                  ${group ? `<span class="badge b-yellow">${esc(group.label)} · ${esc(group.title)}</span>` : ''}
+                  <span class="badge">${esc(lab.service)}</span>
+                  <span class="badge ${levelBadge(lab.level)}">${esc(lab.level)}</span>
+                  <span class="badge">⏱ ${esc(lab.time)}</span>
+                </div>
+                <h2>${esc(lab.title)}</h2>
+                <p>${fmt(lab.summary)}</p>
+              </div>
+              <button class="btn done-toggle ${isDone ? 'on' : ''}" data-done>${isDone ? '✓ 완료함' : '완료 표시'}</button>
+            </div>
+            ${links ? `<div class="link-row">${links}</div>` : ''}
+          </div>
+          ${html}
+          <div class="pager">
+            ${prev ? `<a class="btn" href="#${roomKey}/${prev.id}"><span><small>이전</small>← ${esc(prev.title)}</span></a>` : '<span></span>'}
+            ${next ? `<a class="btn" href="#${roomKey}/${next.id}" style="text-align:right"><span><small>다음</small>${esc(next.title)} →</span></a>` : (roomKey === 'standalone' ? `<a class="btn primary" href="#container">컨테이너형 실습으로 →</a>` : `<a class="btn primary" href="#appsheet">STEP 5 AppSheet로 →</a>`)}
+          </div>
+        </article>
+      </div>`;
+
+    const view = $('#view-' + roomKey);
+    $('.side-select', view).addEventListener('change', e => { location.hash = roomKey + '/' + e.target.value; });
+    $('[data-done]', view).addEventListener('click', () => {
+      if (doneSet.has(lab.id)) doneSet.delete(lab.id); else doneSet.add(lab.id);
+      saveDone();
+      renderRoom(roomKey, lab.id);
+    });
+    const pb = $('[data-copy-prompt]', view);
+    if (pb) pb.addEventListener('click', () => copyText(lab.prompt, '프롬프트'));
+
+    if (lab.files && lab.files.length) {
+      let current = 0;
+      const show = i => {
+        current = i;
+        const f = lab.files[i];
+        const src = CODES[f.src] || '// 코드를 불러오지 못했습니다: ' + f.src;
+        const el = $('#code-view', view);
+        el.className = f.name.endsWith('.html') ? 'language-xml' : 'language-javascript';
+        el.textContent = src;
+        if (window.hljs) { el.removeAttribute('data-highlighted'); window.hljs.highlightElement(el); }
+        $('#code-lines', view).textContent = src.split('\n').length + '줄';
+        view.querySelectorAll('.code-tabs .tab').forEach((b, j) => b.classList.toggle('active', j === i));
+      };
+      view.querySelectorAll('.code-tabs .tab').forEach(b => b.addEventListener('click', () => show(Number(b.dataset.file))));
+      $('[data-copy-code]', view).addEventListener('click', () => copyText(CODES[lab.files[current].src] || '', lab.files[current].name));
+      show(0);
+    }
+  }
+
+  /* ── APPSHEET ── */
+  function renderAppSheet() {
+    const A = D.appsheet;
+    $('#view-appsheet').innerHTML = `
+      <div class="card hero">
+        <div class="kicker">STEP 5 · 노코드 앱 만들기</div>
+        <h1>AppSheet로 컨설팅 방문 관리 앱 만들기</h1>
+        <p class="lead">AppSheet는 구글 시트를 데이터로 삼아 <b>코드 없이</b> 휴대폰 앱을 만들어 주는 도구입니다. Apps Script와 같은 ‘시트 = 데이터베이스’ 구조를 다른 방식으로 만들어 보고 비교해 봅니다.</p>
+        <div class="actions" style="margin-top:20px">
+          <a class="btn primary" ${ext(A.sheetCopy)}>📄 서식 시트 복사</a>
+          <a class="btn" ${ext(A.portfolio)}>AppSheet 예제 포트폴리오 ↗</a>
+          <a class="btn" ${ext('https://www.appsheet.com/')}>AppSheet 열기 ↗</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>따라 하기</h2><p>‘컨설팅 방문 관리’ 시트 → 앱</p></div>
+        <div class="card lab" style="padding-top:18px">
+          <ol class="follow">${A.steps.map(s => `<li>${fmt(s)}</li>`).join('')}</ol>
+          <div class="lab-block">
+            <h3>열 유형(Type) 설정</h3>
+            <div class="table-wrap"><table>
+              <tr><th>열</th><th>유형</th><th>효과</th></tr>
+              ${A.columns.map(r => `<tr><td><b>${esc(r[0])}</b></td><td><code>${esc(r[1])}</code></td><td>${esc(r[2])}</td></tr>`).join('')}
+            </table></div>
+          </div>
+          <div class="lab-block">
+            <h3>선택: Gemini로 앱 만들기</h3>
+            <p class="muted" style="margin:0 0 10px">AppSheet 홈에서 Gemini로 앱 만들기를 고르고, 만들고 싶은 앱을 설명하면 표와 화면을 함께 만들어 줍니다.</p>
+            <div class="prompt-box">
+              <div class="box-bar"><span class="t">앱 설명 예시</span><button class="btn sm" data-copy-as>복사</button></div>
+              <pre>${esc(A.prompt)}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>Apps Script vs AppSheet</h2><p>2차시 실습 결과 비교</p></div>
+        <div class="table-wrap"><table>
+          <tr><th style="width:18%">구분</th><th>Apps Script</th><th>AppSheet</th></tr>
+          ${A.compare.map(r => `<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}
+        </table></div>
+        <div class="card pad" style="margin-top:14px">
+          <b>함께 생각해 보기</b>
+          <ul class="clean" style="margin-top:8px">${A.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>AppSheet 예제 살펴보기</h2><p>포트폴리오에서 마음에 드는 앱을 Copy 해 구조를 뜯어보세요.</p></div>
+        <div class="card pad">
+          <p style="margin:0 0 12px">학교 업무에 응용하기 좋은 예제</p>
+          <div class="chips">${A.picks.map(p => `<span class="chip" style="cursor:default">${esc(p)}</span>`).join('')}</div>
+          <div class="callout info" style="margin-top:16px"><span class="ci">ℹ️</span><span>예제는 Copy 후 수정해 사용할 수 있습니다. 같은 앱을 10명 넘게 함께 쓰려면 유료 플랜이 필요하다는 안내가 포트폴리오에 적혀 있습니다.</span></div>
+          <a class="btn primary" style="margin-top:16px" ${ext(A.portfolio)}>예제 포트폴리오 열기 ↗</a>
+        </div>
+      </div>`;
+    $('[data-copy-as]').addEventListener('click', () => copyText(A.prompt, '앱 설명'));
+  }
+
+  /* ── EXAMPLES ── */
+  function renderExamples() {
+    $('#view-examples').innerHTML = `
+      <div class="section-head" style="margin-top:4px"><h2 style="font-size:26px">예제 모음</h2><p>패들렛에 모아 둔 완성 예제를 한곳에서 살펴봅니다.</p></div>
+      ${D.examples.map(g => `
+        <div class="section" style="margin-top:22px">
+          <div class="section-head"><h2 style="font-size:18px">${esc(g.title)}</h2><p>${esc(g.desc)}</p></div>
+          <div class="ex-grid">${g.items.map(it => `<a class="card ex-card" ${ext(it.url)}><b>${esc(it.title)}</b><small>${esc(it.note)}</small><span class="go">열기 ↗</span></a>`).join('')}</div>
+        </div>`).join('')}`;
+  }
+
+  /* ── SHARE ── */
+  const TOOLS = ['Apps Script', 'AppSheet', 'Gemini Canvas', 'AI Studio', '기타'];
+  let shareItems = [], shareFilter = '전체', shareQuery = '', shareTimer = null;
+
+  function renderShare() {
+    const ready = !!SHARE_API_URL;
+    $('#view-share').innerHTML = `
+      <div class="section-head" style="margin-top:4px"><h2 style="font-size:26px">함께 공유</h2><p>실습하며 만든 웹앱 링크를 올리고 서로의 작품을 둘러봅니다.</p></div>
+      <div class="share-layout">
+        <div class="card pad">
+          <h3 style="font-size:17px;margin-bottom:14px">내 작품 올리기</h3>
+          <form id="share-form" novalidate>
+            <div class="form-field"><label for="sf-name">이름 (소속)</label><input id="sf-name" maxlength="40" placeholder="예: 홍길동 (○○초)" required></div>
+            <div class="form-field"><label for="sf-title">앱 이름</label><input id="sf-title" maxlength="60" placeholder="예: 우리 반 감정일기" required></div>
+            <div class="form-field"><label for="sf-tool">만든 도구</label><select id="sf-tool">${TOOLS.map(t => `<option>${esc(t)}</option>`).join('')}</select></div>
+            <div class="form-field"><label for="sf-url">링크</label><input id="sf-url" type="url" maxlength="500" placeholder="https://script.google.com/macros/s/…/exec" required></div>
+            <div class="form-field"><label for="sf-desc">한 줄 소개 (선택)</label><textarea id="sf-desc" maxlength="300" placeholder="어떤 업무 · 수업에 쓰는 앱인가요?"></textarea></div>
+            <button class="btn primary" type="submit" id="sf-submit" style="width:100%;justify-content:center" ${ready ? '' : 'disabled'}>공유하기</button>
+            <div class="form-msg" id="sf-msg"></div>
+          </form>
+          <div class="callout warn" style="margin-top:6px;font-size:14px"><span class="ci">✔</span><span>올리기 전 확인: 웹앱 액세스가 <b>모든 사용자</b>인지, 주소가 <code>/exec</code>로 끝나는지, 학생 개인정보가 보이지 않는지</span></div>
+        </div>
+        <div>
+          ${ready ? `
+            <div class="share-tools">
+              <div class="chips" id="share-chips">${['전체'].concat(TOOLS).map(t => `<button class="chip ${t === shareFilter ? 'active' : ''}" data-tool="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+              <input class="search" id="share-search" placeholder="앱 이름 · 이름 검색" value="${esc(shareQuery)}">
+              <button class="btn sm" id="share-refresh">새로고침</button>
+            </div>
+            <div class="grid g2" id="share-list"><div class="card empty" style="grid-column:1/-1">불러오는 중…</div></div>` : `
+            <div class="card pad">
+              <div class="callout info"><span class="ci">🛠</span><span>공유 게시판이 아직 연결되지 않았습니다. 강사가 아래 방법으로 연결하면 이 자리에 작품 목록이 나타납니다.</span></div>
+            </div>`}
+          <details class="card" style="margin-top:14px" ${ready ? '' : 'open'}>
+            <summary style="cursor:pointer;padding:16px 18px;font-weight:700">강사용 설정 방법 · 이 게시판도 Apps Script로 만들었어요</summary>
+            <div style="padding:0 18px 18px">
+              <ol class="follow">
+                <li>새 스프레드시트(<code>sheet.new</code>) → 확장 프로그램 → Apps Script → 아래 코드를 붙여 넣고 저장</li>
+                <li>배포 → 새 배포 → 웹 앱 · 실행: <b>나</b> · 액세스: <b>모든 사용자</b> → 배포 → 권한 승인</li>
+                <li>발급된 웹 앱 URL(…/exec)을 이 웹앱 <code>index.html</code> 위쪽의 <code>SHARE_API_URL</code>에 붙여 넣고 다시 올리기</li>
+                <li>부적절한 글은 시트 G열(숨김)에 <code>X</code>를 입력하면 게시판에서 사라집니다.</li>
+              </ol>
+              <div class="code-box" style="margin-top:12px">
+                <div class="code-tabs"><button class="tab active">Code.gs</button><span class="spacer"></span><button class="btn sm dark" data-copy-share>코드 복사</button></div>
+                <pre><code class="language-javascript" id="share-code"></code></pre>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>`;
+
+    const codeEl = $('#share-code');
+    codeEl.textContent = CODES['share_code.gs'] || '';
+    if (window.hljs) window.hljs.highlightElement(codeEl);
+    $('[data-copy-share]').addEventListener('click', () => copyText(CODES['share_code.gs'] || '', '게시판 코드'));
+    $('#share-form').addEventListener('submit', submitShare);
+
+    if (ready) {
+      $('#share-chips').addEventListener('click', e => {
+        const b = e.target.closest('[data-tool]');
+        if (!b) return;
+        shareFilter = b.dataset.tool;
+        document.querySelectorAll('#share-chips .chip').forEach(c => c.classList.toggle('active', c === b));
+        drawShares();
+      });
+      $('#share-search').addEventListener('input', e => { shareQuery = e.target.value; drawShares(); });
+      $('#share-refresh').addEventListener('click', loadShares);
+      loadShares();
+    }
+  }
+
+  async function loadShares() {
+    try {
+      const res = await fetch(SHARE_API_URL);
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || '목록 오류');
+      shareItems = data.items || [];
+      drawShares();
+    } catch (err) {
+      const list = $('#share-list');
+      if (list) list.innerHTML = `<div class="card empty" style="grid-column:1/-1">목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.<br><small>${esc(err.message)}</small></div>`;
+    }
+  }
+
+  function timeAgo(iso) {
+    const t = new Date(iso).getTime();
+    if (!t) return '';
+    const m = Math.floor((Date.now() - t) / 60000);
+    if (m < 1) return '방금';
+    if (m < 60) return m + '분 전';
+    if (m < 1440) return Math.floor(m / 60) + '시간 전';
+    return new Date(t).toLocaleDateString('ko-KR');
+  }
+
+  function drawShares() {
+    const list = $('#share-list');
+    if (!list) return;
+    const q = shareQuery.trim().toLowerCase();
+    const items = shareItems.filter(it =>
+      (shareFilter === '전체' || it.tool === shareFilter) &&
+      (!q || (it.title + ' ' + it.name + ' ' + it.description).toLowerCase().includes(q)));
+    if (!items.length) {
+      list.innerHTML = `<div class="card empty" style="grid-column:1/-1">${shareItems.length ? '조건에 맞는 작품이 없습니다.' : '아직 올라온 작품이 없습니다. 첫 번째로 공유해 보세요!'}</div>`;
+      return;
+    }
+    list.innerHTML = '';
+    items.forEach(it => {
+      const card = document.createElement('div');
+      card.className = 'card share-card';
+      const safeUrl = /^https:\/\//i.test(it.url) ? it.url : '';
+      card.innerHTML = `
+        <div class="who"><span class="badge b-blue"></span><span class="n"></span><span class="t"></span></div>
+        <h4></h4><p></p>
+        ${safeUrl ? `<a class="btn sm" target="_blank" rel="noopener noreferrer">열어 보기 ↗</a>` : ''}`;
+      card.querySelector('.badge').textContent = it.tool;
+      card.querySelector('.n').textContent = it.name;
+      card.querySelector('.t').textContent = timeAgo(it.createdAt);
+      card.querySelector('h4').textContent = it.title;
+      card.querySelector('p').textContent = it.description || '';
+      if (safeUrl) card.querySelector('a').href = safeUrl;
+      list.appendChild(card);
+    });
+  }
+
+  async function submitShare(e) {
+    e.preventDefault();
+    const msg = $('#sf-msg');
+    const btn = $('#sf-submit');
+    const payload = {
+      name: $('#sf-name').value.trim(),
+      title: $('#sf-title').value.trim(),
+      tool: $('#sf-tool').value,
+      url: $('#sf-url').value.trim(),
+      description: $('#sf-desc').value.trim()
+    };
+    msg.className = 'form-msg err';
+    if (!SHARE_API_URL) { msg.textContent = '게시판이 아직 연결되지 않았습니다.'; return; }
+    if (!payload.name || !payload.title || !payload.url) { msg.textContent = '이름, 앱 이름, 링크를 입력해 주세요.'; return; }
+    if (!/^https:\/\/\S+$/i.test(payload.url)) { msg.textContent = '링크는 https:// 로 시작해야 합니다.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = '올리는 중…';
+    try {
+      // text/plain으로 보내면 Apps Script 웹앱과 CORS 사전 요청 없이 통신할 수 있음
+      const res = await fetch(SHARE_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || '등록 실패');
+      msg.className = 'form-msg ok';
+      msg.textContent = '공유되었습니다. 고맙습니다!';
+      ['sf-title', 'sf-url', 'sf-desc'].forEach(id => { $('#' + id).value = ''; });
+      store.set('gas-share-name', payload.name);
+      loadShares();
+    } catch (err) {
+      msg.textContent = '등록하지 못했습니다: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '공유하기';
+    }
+  }
+
+  /* ── ROUTER ── */
+  const rendered = {};
+  function route() {
+    const raw = decodeURIComponent(location.hash.replace(/^#/, '')) || 'home';
+    const [view, sub] = raw.split('/');
+    const known = ['home', 'standalone', 'container', 'appsheet', 'examples', 'share'];
+    const v = known.includes(view) ? view : 'home';
+
+    document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
+    document.querySelectorAll('#tabs a').forEach(a => a.classList.toggle('active', a.dataset.view === v));
+
+    if (v === 'standalone' || v === 'container') {
+      // 두 실습실은 같은 id(code-view 등)를 쓰므로 다른 실습실 화면은 비움
+      $('#view-' + (v === 'standalone' ? 'container' : 'standalone')).innerHTML = '';
+      renderRoom(v, sub);
+      window.scrollTo(0, 0);
+    } else {
+      if (!rendered[v]) {
+        ({ home: renderHome, appsheet: renderAppSheet, examples: renderExamples, share: renderShare })[v]();
+        rendered[v] = v !== 'share'; // 공유 탭은 들어올 때마다 새로 불러옴
+      }
+      if (v === 'share' && !rendered.shareName) {
+        const nm = store.get('gas-share-name', '');
+        if (nm && $('#sf-name')) $('#sf-name').value = nm;
+      }
+      if (v === 'home' && sub) {
+        const target = document.getElementById(sub);
+        if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 30);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
+
+    clearInterval(shareTimer);
+    if (v === 'share' && SHARE_API_URL) shareTimer = setInterval(loadShares, 30000);
+  }
+
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
